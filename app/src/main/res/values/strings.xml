@@ -11,9 +11,25 @@
     <string name="tvTituloUbicacion">Ubicacion: </string>
     <string name="tvTituloDescripcion">Descripción</string>
     <string name="btnInscribirse">Inscribirse</string>
-    <string name="btnCancelar">Cancelar</string>
     //Pantalla de evento opciones
     <string name="btnCancelarIns">Cancelar \ninscripcion</string>
     <string name="btnSolicitarruta">Solicitar ruta</string>
     <string name="btnAtras">Atras</string>
+
+
+
+    //Pantalla de dialogos
+
+    //-Dialogo Buscar evento
+    <string name="tituloDiaBuscarEvento">Ingrese el nombre o codigo del evento.</string>
+    <string name="nombreEvento">Nombre del evento</string>
+    <string name="codigoEvento">Codigo del evento</string>
+
+
+
+
+    //Nombre botones generales
+    <string name="btnBuscar">Buscar</string>
+    <string name="btnCancelar">Cancelar</string>
+
 </resources>
