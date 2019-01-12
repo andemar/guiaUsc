@@ -21,7 +21,7 @@ public class guiaUsc extends AppCompatActivity {
     }
 
 
-//mapa jumur
+//mapa jumur & andemar
 
 
     //-------------------- METODO ONCLICK PARA BOTONES ------------------------//
