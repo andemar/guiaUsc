@@ -76,6 +76,12 @@ public class guiaUsc extends AppCompatActivity {
               /** HAY QUE CERRAR EL DIALOGO, LUEGO DE HACER EL TOAST */
 
               break;
+
+          case R.id.btnTest:
+
+              Intent acHomedb = new Intent(this, dbConection.class);
+              startActivity(acHomedb);
+              break;
       }
     }
 

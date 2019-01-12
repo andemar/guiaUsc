@@ -17,15 +17,12 @@
     <string name="btnAtras">Atras</string>
 
 
-
     //Pantalla de dialogos
 
     //-Dialogo Buscar evento
     <string name="tituloDiaBuscarEvento">Ingrese el nombre o codigo del evento.</string>
     <string name="nombreEvento">Nombre del evento</string>
     <string name="codigoEvento">Codigo del evento</string>
-
-
 
 
     //Nombre botones generales
