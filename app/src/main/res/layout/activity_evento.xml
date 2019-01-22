@@ -8,7 +8,7 @@
     tools:context=".evento">
 
     <TextView
-        android:id="@+id/tvNombreEvento"
+        android:id="@+id/tvEvNombreEvento"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="163dp"
@@ -22,7 +22,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <View
-        android:id="@+id/divider"
+        android:id="@+id/dvEvImg"
         android:layout_width="match_parent"
         android:layout_height="2dp"
         android:layout_margin="5dp"
@@ -34,10 +34,10 @@
         android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvNombreEvento" />
+        app:layout_constraintTop_toBottomOf="@+id/tvEvNombreEvento" />
 
     <TextView
-        android:id="@+id/tFechaEvento"
+        android:id="@+id/tvEvTituloFechaEvento"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -49,10 +49,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ivImagenEvento" />
+        app:layout_constraintTop_toBottomOf="@+id/ivEvImagenEvento" />
 
     <ImageView
-        android:id="@+id/ivImagenEvento"
+        android:id="@+id/ivEvImagenEvento"
         android:layout_width="353dp"
         android:layout_height="71dp"
         android:layout_marginStart="16dp"
@@ -60,11 +60,11 @@
         android:layout_marginEnd="15dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/divider"
+        app:layout_constraintTop_toBottomOf="@+id/dvEvImg"
         app:srcCompat="?android:attr/actionModeSplitBackground" />
 
     <TextView
-        android:id="@+id/tvFechaEvento"
+        android:id="@+id/tvEvFechaEvento"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -75,11 +75,11 @@
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/tFechaEvento"
-        app:layout_constraintTop_toBottomOf="@+id/ivImagenEvento" />
+        app:layout_constraintStart_toEndOf="@+id/tvEvTituloFechaEvento"
+        app:layout_constraintTop_toBottomOf="@+id/ivEvImagenEvento" />
 
     <TextView
-        android:id="@+id/tvTituloPonentes"
+        android:id="@+id/tvEvTituloPonentes"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -90,10 +90,10 @@
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tFechaEvento" />
+        app:layout_constraintTop_toBottomOf="@+id/tvEvTituloFechaEvento" />
 
     <TextView
-        android:id="@+id/textView5"
+        android:id="@+id/tvEvTituloUbicacion"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="96dp"
@@ -102,11 +102,11 @@
         android:textAllCaps="false"
         android:textColor="@color/colorLetraPrincipal"
         android:textSize="18sp"
-        app:layout_constraintStart_toEndOf="@+id/tvFechaEvento"
-        app:layout_constraintTop_toBottomOf="@+id/ivImagenEvento" />
+        app:layout_constraintStart_toEndOf="@+id/tvEvFechaEvento"
+        app:layout_constraintTop_toBottomOf="@+id/ivEvImagenEvento" />
 
     <Button
-        android:id="@+id/btnUbicacion"
+        android:id="@+id/btnEvUbicacion"
         android:layout_width="48dp"
         android:layout_height="25dp"
         android:layout_marginStart="1dp"
@@ -119,8 +119,8 @@
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/textView5"
-        app:layout_constraintTop_toBottomOf="@+id/ivImagenEvento" />
+        app:layout_constraintStart_toEndOf="@+id/tvEvTituloUbicacion"
+        app:layout_constraintTop_toBottomOf="@+id/ivEvImagenEvento" />
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -132,32 +132,31 @@
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvTituloPonentes">
+        app:layout_constraintTop_toBottomOf="@+id/tvEvTituloPonentes">
 
         <ListView
-            android:id="@+id/lvPonentes"
+            android:id="@+id/lvEvPonentes"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     </LinearLayout>
 
     <TextView
-        android:id="@+id/tvTituloDescripcion"
+        android:id="@+id/tvEvTituloDescripcion"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
-        android:text="TextView"
+        android:text="@string/tvTituloDescripcion"
         android:textColor="@color/colorLetraPrincipal"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.026"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout"
-        tools:text="@string/tvTituloDescripcion" />
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
     <TextView
-        android:id="@+id/tvDescripcion"
+        android:id="@+id/tvEvDescripcion"
         android:layout_width="379dp"
         android:layout_height="111dp"
         android:layout_marginStart="8dp"
@@ -167,10 +166,10 @@
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvTituloDescripcion" />
+        app:layout_constraintTop_toBottomOf="@+id/tvEvTituloDescripcion" />
 
     <Button
-        android:id="@+id/btnInscribirse"
+        android:id="@+id/btnEvInscribirse"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -184,10 +183,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.076"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvDescripcion" />
+        app:layout_constraintTop_toBottomOf="@+id/tvEvDescripcion" />
 
     <Button
-        android:id="@+id/btnCancelar"
+        android:id="@+id/btnEvCancelar"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -200,8 +199,8 @@
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.773"
-        app:layout_constraintStart_toEndOf="@+id/btnInscribirse"
-        app:layout_constraintTop_toBottomOf="@+id/tvDescripcion" />
+        app:layout_constraintStart_toEndOf="@+id/btnEvInscribirse"
+        app:layout_constraintTop_toBottomOf="@+id/tvEvDescripcion" />
 
 
 </android.support.constraint.ConstraintLayout>

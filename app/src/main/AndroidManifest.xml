@@ -21,7 +21,6 @@
         <activity android:name=".calendario" />
         <activity android:name=".evento" />
         <activity android:name=".eventoOpciones" />
-        <activity android:name=".dbConection"></activity>
     </application>
 
 </manifest>
