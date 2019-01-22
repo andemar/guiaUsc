@@ -1,24 +1,23 @@
 <resources>
     <string name="app_name">Guia USC</string>
-    //Pantalla principal//
+    //PANTALLA PRINCIPAL//
     <string name="btCalendario">Calendario</string>
     <string name="btBuscarEvento">Buscar evento</string>
     <string name="btEventosInscritos">Eventos inscritos</string>
-    //Pantalla de eventos//
+    //PANTALLA DE EVENTOS//
     <string name="tvTituloEvento">Titulo Default</string>
     <string name="tvTituloFecha">Fecha: </string>
     <string name="tvTituloPonentes">Ponentes</string>
     <string name="tvTituloUbicacion">Ubicacion: </string>
     <string name="tvTituloDescripcion">Descripción</string>
     <string name="btnInscribirse">Inscribirse</string>
-    //Pantalla de evento opciones
+    //PANTALLA DE EVENTOS OPCIONES//
     <string name="btnCancelarIns">Cancelar \ninscripcion</string>
     <string name="btnSolicitarruta">Solicitar ruta</string>
     <string name="btnAtras">Atras</string>
 
 
-
-    //Pantalla de dialogos
+    //PANTALLA DE DIALOGOS//
 
     //-Dialogo Buscar evento
     <string name="tituloDiaBuscarEvento">Ingrese el nombre o codigo del evento.</string>
@@ -26,10 +25,19 @@
     <string name="codigoEvento">Codigo del evento</string>
 
 
-
-
     //Nombre botones generales
-    <string name="btnBuscar">Buscar</string>
+    <string name="btnDiaBusNombre">Buscar Nombre</string>
+    <string name="btnDiaBusCodigo">Buscar Codigo</string>
     <string name="btnCancelar">Cancelar</string>
+
+
+    //TOAST//
+
+    //- Toast Dialogo Buscar Evento - Pantalla principal/PP
+    //Error 1. No se ingreso ningun valor de busqueda
+    <string name="toastPPError1">Por favor, ingrese el nombre del evento que desea buscar.</string>
+    <string name="toastPPError2">Por favor, ingrese el codigo del evento que desea buscar.</string>
+    <string name="toastPPError3">No se ha encontrado ningún evento con ese nombre.</string>
+    <string name="toastPPError4">No se ha encontrado ningún evento con ese codigo.</string>
 
 </resources>

@@ -7,7 +7,7 @@
     tools:context=".eventoOpciones">
 
     <TextView
-        android:id="@+id/tvNombreEvento"
+        android:id="@+id/tvEvNombreEvento"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -34,7 +34,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvNombreEvento" />
+        app:layout_constraintTop_toBottomOf="@+id/tvEvNombreEvento" />
 
     <Button
         android:id="@+id/button2"
