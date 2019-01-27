@@ -10,6 +10,7 @@
     <string name="tvTituloPonentes">Ponentes</string>
     <string name="tvTituloUbicacion">Ubicacion: </string>
     <string name="tvTituloDescripcion">Descripción</string>
+    <string name="tvTituloHora">Hora: </string>
     <string name="btnInscribirse">Inscribirse</string>
     //PANTALLA DE EVENTOS OPCIONES//
     <string name="btnCancelarIns">Cancelar \ninscripcion</string>
@@ -29,6 +30,7 @@
     <string name="btnDiaBusNombre">Buscar Nombre</string>
     <string name="btnDiaBusCodigo">Buscar Codigo</string>
     <string name="btnCancelar">Cancelar</string>
+    <string name="btnEliminar">Eliminar</string>
 
 
     //TOAST//
@@ -39,5 +41,10 @@
     <string name="toastPPError2">Por favor, ingrese el codigo del evento que desea buscar.</string>
     <string name="toastPPError3">No se ha encontrado ningún evento con ese nombre.</string>
     <string name="toastPPError4">No se ha encontrado ningún evento con ese codigo.</string>
+
+    //- Toast evento - Pantalla evento/PE
+    <string name="toastPEAlerta1">Te has inscrito a este evento.</string>
+    <string name="toastPEAlerta2">El evento ha sido eliminado.</string>
+    <string name="toastPEError1">Ya te has inscrito a este evento.</string>
 
 </resources>

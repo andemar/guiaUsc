@@ -1,14 +1,15 @@
 package mobi.usc.guiausc;
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Handler;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -32,6 +33,9 @@ public class guiaUsc extends AppCompatActivity {
 
     //-----------OBJETOS DE OTRAS CLASES--------------//
 
+    private eventosSQLite conexion;
+    private String          NOMBRE_DB = "eventosInscritos";
+    private String          NOMBRE_TABLA = "eventosInscritos";
 
     //-----------ATRIBUTOS DE LOS DIALOGOS-------------//
     /**
@@ -43,6 +47,7 @@ public class guiaUsc extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_guia_usc);
+
     }
 
 
@@ -52,7 +57,7 @@ public class guiaUsc extends AppCompatActivity {
         switch (view.getId()) {
             case R.id.btnCalendario:
 
-                Intent acHomeCale = new Intent(this, calendario.class);
+                final Intent acHomeCale = new Intent(this, calendario.class);
                 startActivity(acHomeCale);
 
                 break;
@@ -77,13 +82,40 @@ public class guiaUsc extends AppCompatActivity {
 
                 //Toast.makeText(this, "eventoIns", Toast.LENGTH_SHORT).show();
 
-                final CharSequence[] lista = {"evento1", "evento2", "evento3", "evento4"};
+                String[] nombres;
+                int i = 0;
+
+                conexion = new eventosSQLite(this, NOMBRE_DB, null, 1);
+                SQLiteDatabase dbInsc = conexion.getReadableDatabase();
+
+                Cursor fila = dbInsc.rawQuery("SELECT Nombre from "+NOMBRE_TABLA, null);
+
+                nombres = new String[fila.getCount()];
+
+                if(fila.moveToFirst()){
+                    nombres[i] = fila.getString(0);
+                    i++;
+                }
+                while(fila.moveToNext()){
+                    nombres[i] = fila.getString(0);
+                    i++;
+                }
+                dbInsc.close();
+
+                final CharSequence[] lista = nombres;
                 AlertDialog.Builder builderInsc = new AlertDialog.Builder(this);
                 builderInsc.setTitle("Eventos inscritos");
                 builderInsc.setItems(lista, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int item) {
-                        Toast.makeText(getApplicationContext(), "Has elegido la opcion: " + lista[item], Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getApplicationContext(), "Has elegido la opcion: " + lista[item], Toast.LENGTH_SHORT).show();
+
+                        //Enviar el intent con el nombre a evento.
+                        Intent acHomeEv = new Intent(getApplicationContext(), evento.class);
+                        //Se ingresa el numero 2, para indicar que los datos son de la lista.
+                        acHomeEv.putExtra("datos", 2);
+                        acHomeEv.putExtra("Nombre", lista[item]);
+                        startActivity(acHomeEv);
                         dialog.cancel();
                     }
                 });
@@ -140,7 +172,7 @@ public class guiaUsc extends AppCompatActivity {
     //----------------- Conexion a base de datos ---------------------//
 
     public void buscarEventoNombre(String Nombre){
-        final String[] respuesta = new String[5];
+        final String[] respuesta = new String[7];
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
         JsonArrayRequest jar = new JsonArrayRequest(
                 Request.Method.GET,
@@ -153,17 +185,23 @@ public class guiaUsc extends AppCompatActivity {
                         try {
                             JSONObject jo = response.getJSONObject(0);
                             respuesta[0] = (jo.getString("Nombre"));
-                            respuesta[1] = (jo.getString("Fecha"));
-                            respuesta[2] = (jo.getString("Ponente"));
-                            respuesta[3] = (jo.getString("Descripcion"));
-                            respuesta[4] = (jo.getString("Ubicacion"));
+                            respuesta[1] = (jo.getString("Imagen"));
+                            respuesta[2] = (jo.getString("Fecha"));
+                            respuesta[3] = (jo.getString("Hora"));
+                            respuesta[4] = (jo.getString("Ponente"));
+                            respuesta[5] = (jo.getString("Descripcion"));
+                            respuesta[6] = (jo.getString("Ubicacion"));
                             //Intent con datos, a la clase evento
                             Intent acHomeEven = new Intent(getApplicationContext(), evento.class);
-                            acHomeEven.putExtra("Nombre",respuesta[0]);
-                            acHomeEven.putExtra("Fecha", respuesta[1]);
-                            acHomeEven.putExtra("Ponente", respuesta[2]);
-                            acHomeEven.putExtra("Descripcion", respuesta[3]);
-                            acHomeEven.putExtra("Ubicacion", respuesta[4]);
+                            //Datos = 0, significa que los datos de entrada, son traidos de la DB.
+                            acHomeEven.putExtra("datos", 0);
+                            acHomeEven.putExtra("Nombre",       respuesta[0]);
+                            acHomeEven.putExtra("Imagen",       respuesta[1]);
+                            acHomeEven.putExtra("Fecha",        respuesta[2]);
+                            acHomeEven.putExtra("Hora",         respuesta[3]);
+                            acHomeEven.putExtra("Ponente",      respuesta[4]);
+                            acHomeEven.putExtra("Descripcion",  respuesta[5]);
+                            acHomeEven.putExtra("Ubicacion",    respuesta[6]);
                             startActivity(acHomeEven);
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -181,7 +219,7 @@ public class guiaUsc extends AppCompatActivity {
     }
 
     public void buscarEventoId(String id){
-        final String[] respuesta = new String[5];
+        final String[] respuesta = new String[7];
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
         JsonArrayRequest jar = new JsonArrayRequest(
                 Request.Method.GET,
@@ -194,17 +232,22 @@ public class guiaUsc extends AppCompatActivity {
                         try {
                             JSONObject jo = response.getJSONObject(0);
                             respuesta[0] = (jo.getString("Nombre"));
-                            respuesta[1] = (jo.getString("Fecha"));
-                            respuesta[2] = (jo.getString("Ponente"));
-                            respuesta[3] = (jo.getString("Descripcion"));
-                            respuesta[4] = (jo.getString("Ubicacion"));
+                            respuesta[1] = (jo.getString("Imagen"));
+                            respuesta[2] = (jo.getString("Fecha"));
+                            respuesta[3] = (jo.getString("Hora"));
+                            respuesta[4] = (jo.getString("Ponente"));
+                            respuesta[5] = (jo.getString("Descripcion"));
+                            respuesta[6] = (jo.getString("Ubicacion"));
                             //Intent con datos, a la clase evento
                             Intent acHomeEven = new Intent(getApplicationContext(), evento.class);
-                            acHomeEven.putExtra("Nombre",respuesta[0]);
-                            acHomeEven.putExtra("Fecha", respuesta[1]);
-                            acHomeEven.putExtra("Ponente", respuesta[2]);
-                            acHomeEven.putExtra("Descripcion", respuesta[3]);
-                            acHomeEven.putExtra("Ubicacion", respuesta[4]);
+                            acHomeEven.putExtra("datos", 1);
+                            acHomeEven.putExtra("Nombre",       respuesta[0]);
+                            acHomeEven.putExtra("Imagen",       respuesta[1]);
+                            acHomeEven.putExtra("Fecha",        respuesta[2]);
+                            acHomeEven.putExtra("Hora",         respuesta[3]);
+                            acHomeEven.putExtra("Ponente",      respuesta[4]);
+                            acHomeEven.putExtra("Descripcion",  respuesta[5]);
+                            acHomeEven.putExtra("Ubicacion",    respuesta[6]);
                             startActivity(acHomeEven);
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -221,6 +264,8 @@ public class guiaUsc extends AppCompatActivity {
         requestQueue.add(jar);
     }
 
+
+
 }
 
 
@@ -232,47 +277,3 @@ public class guiaUsc extends AppCompatActivity {
 
 
 //-------------NO PONER ATENCION-----------------//
-
-/**
-//Metodo para la peticion de datos a la DB
- public String[] buscarEventoId(String id) {
-
- final String[] respuesta = new String[5];
- RequestQueue requesQueue;
- requesQueue = Volley.newRequestQueue(this);
- JsonArrayRequest jr = new JsonArrayRequest("http://guiausc.000webhostapp.com/web_services/buscar_evento_id.php?id_evento=" + id, new Response.Listener<JSONArray>() {
- public void onResponse(JSONArray response) {
- JSONObject jo;
- try {
- jo = response.getJSONObject(0);
- respuesta[0] = (jo.getString("Nombre"));
- respuesta[1] = (jo.getString("Fecha"));
- respuesta[2] = (jo.getString("Ponente"));
- respuesta[3] = (jo.getString("Descripcion"));
- respuesta[4] = (jo.getString("Lugar"));
- } catch (JSONException e) {
- Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
- }
- }
- }, new Response.ErrorListener() {
- public void onErrorResponse(VolleyError error) {
- Toast.makeText(getApplicationContext(), "F", Toast.LENGTH_SHORT).show();
- }
- }
- );
-
- requesQueue.add(jr);
- Toast.makeText(getApplicationContext(), "Salir del metodo: "+ respuesta[0], Toast.LENGTH_SHORT).show();
-
-
-
- return respuesta;
- }
-
-
-
-
-
-
-
- */
