@@ -16,7 +16,8 @@
         android:layout_marginEnd="163dp"
         android:text="@string/tvTituloEvento"
         android:textColor="@color/colorLetraPrincipal"
-        android:textSize="18sp"
+        android:textSize="24sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -36,99 +37,115 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvEvNombreEvento" />
 
+    <ImageView
+        android:id="@+id/ivEvImagenEvento"
+        android:layout_width="0dp"
+        android:layout_height="250dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="15dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dvEvImg" />
+
     <TextView
         android:id="@+id/tvEvTituloFechaEvento"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="310dp"
         android:text="@string/tvTituloFecha"
         android:textColor="@color/colorLetraPrincipal"
-        android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        android:textSize="21sp"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ivEvImagenEvento" />
-
-    <ImageView
-        android:id="@+id/ivEvImagenEvento"
-        android:layout_width="353dp"
-        android:layout_height="71dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginEnd="15dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/dvEvImg"
-        app:srcCompat="?android:attr/actionModeSplitBackground" />
 
     <TextView
         android:id="@+id/tvEvFechaEvento"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="236dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="11dp"
         android:text="1/1/2019"
         android:textColor="@color/colorLetraPrincipal"
         android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/tvEvTituloFechaEvento"
         app:layout_constraintTop_toBottomOf="@+id/ivEvImagenEvento" />
 
     <TextView
-        android:id="@+id/tvEvTituloPonentes"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginEnd="320dp"
-        android:text="@string/tvTituloPonentes"
-        android:textColor="@color/colorLetraPrincipal"
-        android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvEvTituloFechaEvento" />
-
-    <TextView
         android:id="@+id/tvEvTituloUbicacion"
-        android:layout_width="wrap_content"
+        android:layout_width="103dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="96dp"
         android:layout_marginTop="8dp"
+        android:layout_marginEnd="6dp"
         android:text="@string/tvTituloUbicacion"
         android:textAllCaps="false"
         android:textColor="@color/colorLetraPrincipal"
-        android:textSize="18sp"
-        app:layout_constraintStart_toEndOf="@+id/tvEvFechaEvento"
+        android:textSize="21sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@+id/btnEvUbicacion"
         app:layout_constraintTop_toBottomOf="@+id/ivEvImagenEvento" />
 
     <Button
         android:id="@+id/btnEvUbicacion"
         android:layout_width="48dp"
         android:layout_height="25dp"
-        android:layout_marginStart="1dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="52dp"
+        android:layout_marginTop="11dp"
+        android:layout_marginEnd="16dp"
         android:background="@color/colorbtn"
         android:text="2413"
         android:textAllCaps="false"
         android:textColor="@color/colorLetraPrincipal"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/tvEvTituloUbicacion"
         app:layout_constraintTop_toBottomOf="@+id/ivEvImagenEvento" />
+
+    <TextView
+        android:id="@+id/tvEvTituloHora"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/tvTituloHora"
+        android:textColor="@color/colorLetraPrincipal"
+        android:textSize="21sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvEvTituloFechaEvento" />
+
+    <TextView
+        android:id="@+id/tvEvHora"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="13dp"
+        android:text="@string/tvTituloHora"
+        android:textColor="@color/colorLetraPrincipal"
+        android:textSize="18sp"
+        app:layout_constraintStart_toEndOf="@+id/tvEvTituloHora"
+        app:layout_constraintTop_toBottomOf="@+id/tvEvFechaEvento" />
+
+    <TextView
+        android:id="@+id/tvEvTituloPonentes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="12dp"
+        android:text="@string/tvTituloPonentes"
+        android:textColor="@color/colorLetraPrincipal"
+        android:textSize="21sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvEvTituloHora" />
 
     <LinearLayout
         android:id="@+id/linearLayout"
-        android:layout_width="248dp"
-        android:layout_height="148dp"
+        android:layout_width="wrap_content"
+        android:layout_height="105dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="22dp"
-        android:layout_marginEnd="147dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="16dp"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -142,29 +159,26 @@
 
     <TextView
         android:id="@+id/tvEvTituloDescripcion"
-        android:layout_width="wrap_content"
+        android:layout_width="117dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="8dp"
         android:text="@string/tvTituloDescripcion"
         android:textColor="@color/colorLetraPrincipal"
-        android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.026"
+        android:textSize="21sp"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
     <TextView
         android:id="@+id/tvEvDescripcion"
-        android:layout_width="379dp"
-        android:layout_height="111dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="4dp"
         android:text="@string/tvTituloDescripcion"
-        android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:textColor="@color/colorLetraPrincipal"
+        android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvEvTituloDescripcion" />
 
@@ -172,35 +186,46 @@
         android:id="@+id/btnEvInscribirse"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="12dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginBottom="16dp"
         android:background="@color/colorbtn"
+        android:onClick="onClickEvento"
         android:text="@string/btnInscribirse"
         android:textAllCaps="false"
         android:textColor="@color/colorLetraPrincipal"
         android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.076"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvEvDescripcion" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/btnEvElimintar"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginBottom="16dp"
+        android:background="@color/colorbtn"
+        android:onClick="onClickEvento"
+        android:text="@string/btnEliminar"
+        android:textAllCaps="false"
+        android:textColor="@color/colorLetraPrincipal"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/btnEvCancelar"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="12dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="16dp"
         android:background="@color/colorbtn"
+        android:onClick="onClickEvento"
         android:text="@string/btnCancelar"
         android:textAllCaps="false"
         android:textColor="@color/colorLetraPrincipal"
         android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.773"
-        app:layout_constraintStart_toEndOf="@+id/btnEvInscribirse"
-        app:layout_constraintTop_toBottomOf="@+id/tvEvDescripcion" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 
 </android.support.constraint.ConstraintLayout>
