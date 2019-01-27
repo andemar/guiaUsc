@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -17,6 +18,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
+
+import java.io.ByteArrayOutputStream;
 
 public class evento extends AppCompatActivity {
 
@@ -36,7 +39,7 @@ public class evento extends AppCompatActivity {
     private String          NOMBRE_DB = "eventosInscritos";
     private String          NOMBRE_TABLA = "eventosInscritos";
     private eventosSQLite   conexion;
-    
+
 
     //---------------CONSTRUCTOR-----------------//
 
@@ -54,6 +57,7 @@ public class evento extends AppCompatActivity {
         ponentesEvento = (ListView) findViewById(R.id.lvEvPonentes);
         btnEliminar = (Button) findViewById(R.id.btnEvElimintar);
         btnInscribirse = (Button) findViewById(R.id.btnEvInscribirse);
+        //datos: Variable que expecifica por donde se ingresaron los valores, WEB o SQLite.
         datos = getIntent().getIntExtra("datos",-1);
         nombreEventoIntent = getIntent().getStringExtra("Nombre");
 
@@ -89,17 +93,25 @@ public class evento extends AppCompatActivity {
 
                 if(existe.getCount() <= 0){
                     //Se crea el nuevo evento
-                    //idEvento String primary key,  nombre String, fecha String, Ponentes String, Descripcion String, Ubicacion String
+                    //LISTA DE ATRIBUTOS: idEvento String primary key, nombre String, Imagen BLOB, fecha String, Ponentes String, Descripcion String, Ubicacion String
+
                     ContentValues registro = new ContentValues();
                     registro.put("idEvento", dbInsc.rawQuery("SELECT * FROM "+ NOMBRE_TABLA, null).getCount() + 1);
                     registro.put("Nombre",nombreEvento.getText().toString());
-                    /**  */
-                    /**FALTA INSERTAR LA IMAGEN IMAGEN*/
-                    /**  */
 
+                    /**
+                     * Para almacenar la imagen, se extrae el bitmap del ImageView
+                     * Luego se convierte a un array de byte, mediante byteArrayOutputStream
+                     * y se almacena en una variable byte[] que sera ingresada al SQLite
+                     * y se limpia el outputStream.
+                     */
                     Bitmap bitmap = ((BitmapDrawable)imagenEvento.getDrawable()).getBitmap();
-
-
+                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+                    byte[] imagen = stream.toByteArray();
+                    bitmap.recycle();
+                    registro.put("Imagen", imagen);
+                    /**FIN*/
 
                     registro.put("Fecha", fechaEvento.getText().toString());
                     registro.put("Hora", horaEvento.getText().toString());
@@ -145,7 +157,6 @@ public class evento extends AppCompatActivity {
 
         /**IMAGEN*/
 
-
         String urlImagen = getIntent().getStringExtra("Imagen");
         if(urlImagen.isEmpty()){
             urlImagen = "Error";
@@ -176,24 +187,31 @@ public class evento extends AppCompatActivity {
         conexion = new eventosSQLite(this, NOMBRE_DB, null, 1);
         SQLiteDatabase db = conexion.getReadableDatabase();
 
-        Cursor fila = db.rawQuery("SELECT Fecha, Hora, Ubicacion, Ponente, Descripcion FROM "+NOMBRE_TABLA+" WHERE Nombre ='"+nombre+"'", null);
+        Cursor fila = db.rawQuery("SELECT Imagen, Fecha, Hora, Ubicacion, Ponente, Descripcion FROM "+NOMBRE_TABLA+" WHERE Nombre ='"+nombre+"'", null);
 
         if(fila.moveToFirst()){
             nombreEvento.setText(nombre);
-            /**IMAGEN*/
-            fechaEvento.setText(fila.getString(0));
-            horaEvento.setText(fila.getString(1));
-            btnUbicacionEvento.setText(fila.getString(2));
+            /**IMAGEN
+             * Para extraer la imagen de SQLite es necesario un arreglo de bye
+             * Se extrame mediante getBlob
+             * Se convierte de byte a bitmap, mediante bitmapFactory....
+             * y el bitmap resultante se inserta al ImageView
+             * */
+            byte[] imagen = fila.getBlob(0);
+            Bitmap bmp = BitmapFactory.decodeByteArray(imagen, 0, imagen.length);
+            imagenEvento.setImageBitmap(bmp);
+            /**FIN*/
+            fechaEvento.setText(fila.getString(1));
+            horaEvento.setText(fila.getString(2));
+            btnUbicacionEvento.setText(fila.getString(3));
             /** LISTA DE PONENTES */
             //Obtengo un arreglo con los ponentes. (Cada uno separado por 'coma', y eliminando los espacios en blanco"
-            String[] listaPonente = fila.getString(3).split(",");
+            String[] listaPonente = fila.getString(4).split(",");
             ArrayAdapter<String> nombres = new ArrayAdapter<String>(this, R.layout.list_ponentes_evento,listaPonente);
             ponentesEvento.setAdapter(nombres);
 
-            descripcionEvento.setText(fila.getString(4));
+            descripcionEvento.setText(fila.getString(5));
         }else
             Toast.makeText(this, "No se encontro el evento en SQLite",Toast.LENGTH_SHORT).show();
     }
-
-
 }

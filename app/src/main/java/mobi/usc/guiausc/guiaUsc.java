@@ -47,6 +47,7 @@ public class guiaUsc extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_guia_usc);
+
     }
 
 
@@ -262,6 +263,8 @@ public class guiaUsc extends AppCompatActivity {
         );
         requestQueue.add(jar);
     }
+
+
 
 }
 
