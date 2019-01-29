@@ -49,9 +49,4 @@
     <string name="toastPEAlerta2">El evento ha sido eliminado.</string>
     <string name="toastPEError1">Ya te has inscrito a este evento.</string>
 
-    //- Toast evento - Pantalla evento/PE
-    <string name="toastPEAlerta1">Te has inscrito a este evento.</string>
-    <string name="toastPEAlerta2">El evento ha sido eliminado.</string>
-    <string name="toastPEError1">Ya te has inscrito a este evento.</string>
-
 </resources>
