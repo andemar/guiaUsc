@@ -107,21 +107,26 @@ public class evento extends AppCompatActivity {
                      */
                     Bitmap bitmap = ((BitmapDrawable)imagenEvento.getDrawable()).getBitmap();
                     ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                    /** CUIDADO CON LAS IMAGENES PNG !!!!!! */
                     bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
                     byte[] imagen = stream.toByteArray();
-                    bitmap.recycle();
                     registro.put("Imagen", imagen);
                     /**FIN*/
 
-                    registro.put("Fecha", fechaEvento.getText().toString());
-                    registro.put("Hora", horaEvento.getText().toString());
-                    registro.put("Ubicacion", btnUbicacionEvento.getText().toString());
-                    registro.put("Ponente", getIntent().getStringExtra("Ponente"));
+                    registro.put("Fecha",       fechaEvento.getText().toString());
+                    registro.put("Hora",        horaEvento.getText().toString());
+                    registro.put("Ubicacion",   btnUbicacionEvento.getText().toString());
+                    registro.put("Ponente",     getIntent().getStringExtra("Ponente"));
                     registro.put("Descripcion", descripcionEvento.getText().toString());
+                    //Valores que identifican si un valor cambio. 0-No ha cambiado, 1-Si ha cambiado.
+                    registro.put("FechaCambio", 0);
+                    registro.put("HoraCambio",  0);
+                    registro.put("UbicacionCambio", 0);
                     //Se insertan los datos al SQLite
                     dbInsc.insert(NOMBRE_TABLA, null, registro);
                     Toast.makeText(this, R.string.toastPEAlerta1, Toast.LENGTH_LONG).show();
                     dbInsc.close();
+                    //bitmap.recycle();
                     Intent acEvenHome = new Intent(getApplicationContext(), guiaUsc.class);
                     startActivity(acEvenHome);
                 }else
@@ -140,7 +145,7 @@ public class evento extends AppCompatActivity {
                     Intent acEvenHome = new Intent(getApplicationContext(), guiaUsc.class);
                     startActivity(acEvenHome);
                 }else
-                    Toast.makeText(this, "Hubo un error, no se elimino", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, R.string.toastPPError6, Toast.LENGTH_SHORT).show();
 
                 break;
 
@@ -156,12 +161,10 @@ public class evento extends AppCompatActivity {
         nombreEvento.setText(getIntent().getStringExtra("Nombre"));
 
         /**IMAGEN*/
-
         String urlImagen = getIntent().getStringExtra("Imagen");
         if(urlImagen.isEmpty()){
             urlImagen = "Error";
         }
-
         Picasso.get()
                 .load(urlImagen)
                 //.resize(100,100)
@@ -187,7 +190,7 @@ public class evento extends AppCompatActivity {
         conexion = new eventosSQLite(this, NOMBRE_DB, null, 1);
         SQLiteDatabase db = conexion.getReadableDatabase();
 
-        Cursor fila = db.rawQuery("SELECT Imagen, Fecha, Hora, Ubicacion, Ponente, Descripcion FROM "+NOMBRE_TABLA+" WHERE Nombre ='"+nombre+"'", null);
+        Cursor fila = db.rawQuery("SELECT Imagen, Fecha, Hora, Ubicacion, Ponente, Descripcion, FechaCambio, HoraCambio, UbicacionCambio FROM "+NOMBRE_TABLA+" WHERE Nombre ='"+nombre+"'", null);
 
         if(fila.moveToFirst()){
             nombreEvento.setText(nombre);
@@ -209,8 +212,26 @@ public class evento extends AppCompatActivity {
             String[] listaPonente = fila.getString(4).split(",");
             ArrayAdapter<String> nombres = new ArrayAdapter<String>(this, R.layout.list_ponentes_evento,listaPonente);
             ponentesEvento.setAdapter(nombres);
-
+            /**FIN*/
             descripcionEvento.setText(fila.getString(5));
+
+            //COMPROBACION - CAMBIAR DE COLOR A VERDE, CUANDO ALGUNO DE LOS COMPROBANTES SEA 1.
+            int fechaCambio = fila.getInt(6);
+            int horaCambio = fila.getInt(7);
+            int ubicacionCambio = fila.getInt(8);
+
+            if(fechaCambio == 1){
+                fechaEvento.setBackgroundColor(getResources().getColor(R.color.colorCambio));
+            }
+
+            if(horaCambio == 1){
+                horaEvento.setBackgroundColor(getResources().getColor(R.color.colorCambio));
+            }
+
+            if(ubicacionCambio == 1){
+                btnUbicacionEvento.setBackgroundColor(getResources().getColor(R.color.colorCambio));
+            }
+
         }else
             Toast.makeText(this, "No se encontro el evento en SQLite",Toast.LENGTH_SHORT).show();
     }

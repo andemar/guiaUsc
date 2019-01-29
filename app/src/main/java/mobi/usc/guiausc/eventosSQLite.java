@@ -22,7 +22,18 @@ public class eventosSQLite extends SQLiteOpenHelper {
          * Ubicacion = La ubicacion del evento.
          */
         //db.execSQL("create table eventosInscritos(idEvento String primary key,  Nombre String, Fecha String, Ponentes String, Descripcion String, Ubicacion String)");
-        db.execSQL("create table eventosInscritos(idEvento String primary key,  Nombre String, Imagen BLOB, Fecha String, Hora String, Ubicacion String, Ponente String, Descripcion String)");
+        db.execSQL("create table eventosInscritos(" +
+                " idEvento     String primary key," +
+                " Nombre       String,"  +
+                " Imagen       BLOB,"    +
+                " Fecha        String,"  +
+                " Hora         String,"  +
+                " Ubicacion    String,"  +
+                " Ponente      String,"  +
+                " Descripcion  String,"  +
+                " FechaCambio     int," +
+                " HoraCambio      int," +
+                " UbicacionCambio int)");
     }
 
     @Override
