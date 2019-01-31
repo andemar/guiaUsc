@@ -57,6 +57,7 @@ public class guiaUsc extends AppCompatActivity {
         comprobacionEliminar();
         //Metodo que comprueba si han ocurrido cambios en los eventos.
         comprobacionCambio();
+        /** ALERTA PARA DECIR QUE UN EVENTO INSCRITO, YA SE VA A REALIZAR, 1 DIA DE POR MEDIO */
     }
 
 
@@ -172,7 +173,7 @@ public class guiaUsc extends AppCompatActivity {
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
         JsonArrayRequest jar = new JsonArrayRequest(
                 Request.Method.GET,
-                urlNombre + Nombre,
+                urlNombre + Nombre.replace(" ", "%20"),
                 null,
                 new Response.Listener<JSONArray>() {
                     @Override
@@ -207,7 +208,7 @@ public class guiaUsc extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getApplicationContext(), R.string.toastPPError3, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "Linea: 213: " + R.string.toastPPError3, Toast.LENGTH_SHORT).show();
                     }
                 }
         );
@@ -219,7 +220,7 @@ public class guiaUsc extends AppCompatActivity {
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
         JsonArrayRequest jar = new JsonArrayRequest(
                 Request.Method.GET,
-                urlNombre + nombre,
+                urlNombre + nombre.replace(" ", "%20"),
                 null,
                 new Response.Listener<JSONArray>() {
                     @Override
