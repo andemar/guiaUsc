@@ -6,15 +6,63 @@
     android:layout_height="match_parent"
     tools:context=".calendario">
 
-    <CalendarView
-        android:id="@+id/calendarView"
+    <TextView
+        android:id="@+id/tvTituloFacultad"
         android:layout_width="wrap_content"
-        android:layout_height="323dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:gravity="center_horizontal"
+        android:text="@string/tvTituloFactultad"
+        android:textColor="@color/colorLetraPrincipal"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Spinner
+        android:id="@+id/spFacultadesCalendario"
+        android:layout_width="210sp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:visibility="visible"
+        app:layout_constraintStart_toEndOf="@+id/tvTituloFacultad"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/btnCalendarioBuscar"
+        android:layout_width="wrap_content"
+        android:layout_height="31dp"
+        android:layout_marginTop="21dp"
+        android:layout_marginEnd="10dp"
+        android:background="@color/colorbtn"
+        android:onClick="onClickCalendario"
+        android:text="@string/btnBuscar"
+        android:textColor="@color/colorLetraPrincipal"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/dvEvImg"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_margin="5dp"
+        android:background="@android:color/darker_gray"
+        android:textColor="@android:color/white"
+        android:visibility="visible"
+        app:layout_constraintTop_toBottomOf="@+id/tvTituloFacultad"
+        tools:layout_editor_absoluteX="8dp" />
+
+    <ListView
+        android:id="@+id/lvCalendarioEventos"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/dvEvImg" />
 
 </android.support.constraint.ConstraintLayout>

@@ -16,7 +16,8 @@
     <string name="btnCancelarIns">Cancelar \ninscripcion</string>
     <string name="btnSolicitarruta">Solicitar ruta</string>
     <string name="btnAtras">Atras</string>
-
+    //PANTALLA DE CALENDARIO//
+    <string name="tvTituloFactultad">Eventos\npor facultad:</string>
 
     //PANTALLA DE DIALOGOS//
 
@@ -31,6 +32,7 @@
     <string name="btnDiaBusCodigo">Buscar Codigo</string>
     <string name="btnCancelar">Cancelar</string>
     <string name="btnEliminar">Eliminar</string>
+    <string name="btnBuscar">Buscar</string>
 
 
     //TOAST//
@@ -48,5 +50,10 @@
     <string name="toastPEAlerta1">Te has inscrito a este evento.</string>
     <string name="toastPEAlerta2">El evento ha sido eliminado.</string>
     <string name="toastPEError1">Ya te has inscrito a este evento.</string>
+
+
+    //- Toast evento - Pantalla calendario / PC
+    <string name="toastPCError1">Hubo un error, no se puede obtener los datos de la lista.</string>
+    <string name="toastPCError2">No se encontraron eventos para esta facultad.</string>
 
 </resources>

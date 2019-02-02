@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.ConnectivityManager;
@@ -51,18 +52,20 @@ public class guiaUsc extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        //Bloquear las pantallas de forma vertical
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_guia_usc);
         //Metodo que elimina eventos, que hayan pasado.
         comprobacionEliminar();
         //Metodo que comprueba si han ocurrido cambios en los eventos.
         comprobacionCambio();
-        /** ALERTA PARA DECIR QUE UN EVENTO INSCRITO, YA SE VA A REALIZAR, 1 DIA DE POR MEDIO */
     }
 
 
-    //-------------------- METODO ONCLICK PARA BOTONES ------------------------//
+    /** ALERTA PARA DECIR QUE UN EVENTO INSCRITO, YA SE VA A REALIZAR, 1 DIA DE POR MEDIO */
 
+    //-------------------- METODO ONCLICK PARA BOTONES ------------------------//
     public void onClickGuiaUsc(View view) {
         switch (view.getId()) {
             case R.id.btnCalendario:
