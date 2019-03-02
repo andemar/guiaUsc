@@ -30,6 +30,7 @@ import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 public class guiaUsc extends AppCompatActivity {
 
@@ -516,7 +517,6 @@ public class guiaUsc extends AppCompatActivity {
 
     /**Metodo que obtiene los datos de la lista y comprueba si el usuario tiene eventos inscritos y conexion a internet.*/
     private void comprobacionCambio(){
-
         String[] listaEventos = getNombreEventos();
 
         if(listaEventos.length == 0){
@@ -605,6 +605,8 @@ public class guiaUsc extends AppCompatActivity {
             consulta.close();
             escritura.close();
     }
+
+
 
 }
 

@@ -4,60 +4,68 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/background"
     tools:context=".guiaUsc">
 
-    <Button
+    <ImageButton
         android:id="@+id/btnCalendario"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
+        android:layout_width="200dp"
+        android:layout_height="103dp"
+        android:layout_gravity="bottom"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="100dp"
-        android:layout_marginEnd="8dp"
-        android:background="@color/colorbtn"
+        android:layout_marginTop="200dp"
+        android:background="@android:color/transparent"
+        android:elevation="0dp"
         android:onClick="onClickGuiaUsc"
-        android:text="@string/btCalendario"
-        android:textAllCaps="false"
-        android:textColor="@color/colorLetraPrincipal"
-        android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
+        android:scaleType="fitCenter"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_calendario" />
 
-    <Button
+    <ImageButton
         android:id="@+id/btnBuscarEvento"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="100dp"
+        android:layout_width="200dp"
+        android:layout_height="103dp"
+        android:layout_gravity="bottom"
+        android:layout_marginTop="200dp"
         android:layout_marginEnd="8dp"
-        android:background="@color/colorbtn"
+        android:background="@android:color/transparent"
+        android:elevation="0dp"
         android:onClick="onClickGuiaUsc"
-        android:text="@string/btBuscarEvento"
-        android:textAllCaps="false"
-        android:textColor="@color/colorLetraPrincipal"
-        android:textSize="18sp"
+        android:scaleType="fitCenter"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnCalendario" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_buscar" />
 
-    <Button
+    <ImageButton
         android:id="@+id/btnEventoInsc"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="100dp"
-        android:layout_marginEnd="8dp"
-        android:background="@color/colorbtn"
+        android:layout_width="169dp"
+        android:layout_height="86dp"
+        android:layout_marginStart="127dp"
+        android:layout_marginTop="48dp"
+        android:layout_marginEnd="127dp"
+        android:background="@android:color/transparent"
         android:onClick="onClickGuiaUsc"
-        android:text="@string/btEventosInscritos"
-        android:textAllCaps="false"
-        android:textColor="@color/colorLetraPrincipal"
-        android:textSize="18sp"
+        android:scaleType="fitCenter"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnBuscarEvento" />
+        app:layout_constraintTop_toBottomOf="@+id/btnCalendario"
+        app:srcCompat="@drawable/ic_inscritos" />
+
+    <ImageButton
+        android:id="@+id/imageButton3"
+        android:layout_width="157dp"
+        android:layout_height="74dp"
+        android:layout_marginStart="127dp"
+        android:layout_marginEnd="127dp"
+        android:layout_marginBottom="16dp"
+        android:background="@android:color/transparent"
+        android:elevation="0dp"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/ic_about" />
+
 
 </android.support.constraint.ConstraintLayout>
