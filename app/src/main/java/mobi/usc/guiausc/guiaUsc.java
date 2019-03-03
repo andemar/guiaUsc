@@ -103,25 +103,33 @@ public class guiaUsc extends AppCompatActivity {
                 //Toast.makeText(this, "eventoIns", Toast.LENGTH_SHORT).show();
                 String[] nombres = getNombreEventos();
 
-                final CharSequence[] lista = nombres;
-                AlertDialog.Builder builderInsc = new AlertDialog.Builder(this);
-                builderInsc.setTitle("Eventos inscritos");
-                builderInsc.setItems(lista, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int item) {
-                        //Toast.makeText(getApplicationContext(), "Has elegido la opcion: " + lista[item], Toast.LENGTH_SHORT).show();
+                if(nombres.length == 0){
+                    Toast.makeText(this, R.string.toastPPError7, Toast.LENGTH_SHORT).show();
+                }else {
+                    final CharSequence[] lista = nombres;
+                    AlertDialog.Builder builderInsc = new AlertDialog.Builder(this);
+                    builderInsc.setTitle("Eventos inscritos");
+                    builderInsc.setItems(lista, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int item) {
+                            //Toast.makeText(getApplicationContext(), "Has elegido la opcion: " + lista[item], Toast.LENGTH_SHORT).show();
 
-                        //Enviar el intent con el nombre a evento.
-                        Intent acHomeEv = new Intent(getApplicationContext(), evento.class);
-                        //Se ingresa el numero 2, para indicar que los datos son de la lista.
-                        acHomeEv.putExtra("datos", 2);
-                        acHomeEv.putExtra("Nombre", lista[item]);
-                        startActivity(acHomeEv);
-                        dialog.cancel();
-                    }
-                });
-                AlertDialog ventanaInsc = builderInsc.create();
-                ventanaInsc.show();
+                            //Enviar el intent con el nombre a evento.
+                            Intent acHomeEv = new Intent(getApplicationContext(), evento.class);
+                            //Se ingresa el numero 2, para indicar que los datos son de la lista.
+                            acHomeEv.putExtra("datos", 2);
+                            acHomeEv.putExtra("Nombre", lista[item]);
+                            startActivity(acHomeEv);
+                            dialog.cancel();
+                        }
+                    });
+                    AlertDialog ventanaInsc = builderInsc.create();
+                    //Inicio de color en la ventana
+                    ventanaInsc.getWindow().setBackgroundDrawableResource(R.color.colorPrimary);
+                    ventanaInsc.getListView().setBackgroundColor(getResources().getColor(R.color.colorLista));
+                    //Fin de color
+                    ventanaInsc.show();
+                }
                 break;
 
             //Los case posteriores hacen referencia a los botones de loa cuadros de dialogo.

@@ -45,6 +45,7 @@
     <string name="toastPPError4">No se ha encontrado ningún evento con ese codigo.</string>
     <string name="toastPPError5">No tienes acceso a internet en este momento.</string>
     <string name="toastPPError6">Hubo un error, no se puedo eliminar el evento.</string>
+    <string name="toastPPError7">No te has inscrito a ningún evento.</string>
 
     //- Toast evento - Pantalla evento/PE
     <string name="toastPEAlerta1">Te has inscrito a este evento.</string>

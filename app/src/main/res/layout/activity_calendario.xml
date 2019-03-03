@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/background_no_home"
     tools:context=".calendario">
 
     <TextView
@@ -25,6 +26,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
+        android:popupBackground="@android:color/white"
         android:visibility="visible"
         app:layout_constraintStart_toEndOf="@+id/tvTituloFacultad"
         app:layout_constraintTop_toTopOf="parent" />
@@ -35,10 +37,10 @@
         android:layout_height="31dp"
         android:layout_marginTop="21dp"
         android:layout_marginEnd="10dp"
-        android:background="@color/colorbtn"
+        android:background="@drawable/btn_aceptar"
         android:onClick="onClickCalendario"
         android:text="@string/btnBuscar"
-        android:textColor="@color/colorLetraPrincipal"
+        android:textColor="@drawable/txt_btn_aceptar"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

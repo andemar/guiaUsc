@@ -5,6 +5,7 @@
     android:id="@+id/nUbicacion"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/background_no_home"
     tools:context=".evento">
 
     <TextView
@@ -188,11 +189,11 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginBottom="16dp"
-        android:background="@color/colorbtn"
+        android:background="@drawable/btn_aceptar"
         android:onClick="onClickEvento"
         android:text="@string/btnInscribirse"
         android:textAllCaps="false"
-        android:textColor="@color/colorLetraPrincipal"
+        android:textColor="@drawable/txt_btn_aceptar"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -203,11 +204,11 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginBottom="16dp"
-        android:background="@color/colorbtn"
+        android:background="@drawable/btn_eliminar"
         android:onClick="onClickEvento"
         android:text="@string/btnEliminar"
         android:textAllCaps="false"
-        android:textColor="@color/colorLetraPrincipal"
+        android:textColor="@drawable/txt_btn_eliminar"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -218,11 +219,11 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="32dp"
         android:layout_marginBottom="16dp"
-        android:background="@color/colorbtn"
+        android:background="@drawable/btn_cancelar"
         android:onClick="onClickEvento"
         android:text="@string/btnCancelar"
         android:textAllCaps="false"
-        android:textColor="@color/colorLetraPrincipal"
+        android:textColor="@drawable/txt_btn_cancelar"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
