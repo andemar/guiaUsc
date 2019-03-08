@@ -53,7 +53,7 @@
         app:srcCompat="@drawable/ic_inscritos" />
 
     <ImageButton
-        android:id="@+id/imageButton3"
+        android:id="@+id/btnAbout"
         android:layout_width="157dp"
         android:layout_height="74dp"
         android:layout_marginStart="127dp"
@@ -61,6 +61,7 @@
         android:layout_marginBottom="16dp"
         android:background="@android:color/transparent"
         android:elevation="0dp"
+        android:onClick="onClickGuiaUsc"
         android:scaleType="fitCenter"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

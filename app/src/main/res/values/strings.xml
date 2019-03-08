@@ -57,4 +57,24 @@
     <string name="toastPCError1">Hubo un error, no se puede obtener los datos de la lista.</string>
     <string name="toastPCError2">No se encontraron eventos para esta facultad.</string>
 
+    //About
+    <string name="about">
+        Guía Usc\n
+
+        \nBienvenidos a la aplicación para eventos de la Universidad Santiago de Cali – sede Pampalinda, en esta aplicación podrás visualizar el calendario de eventos de la Universidad, poder ver su fecha, hora, descripción y ponentes y estar al tanto de los cambios que surjan antes y durante el evento.\n
+        \nSu uso es muy fácil, hay 3 botones los cuales sirven para interactuar con la aplicación:\n
+
+        \n1. Botón de calendario:
+        Este botón despliega una lista de la totalidad de eventos que la Universidad este ofreciendo en ese momento, donde podrás visualizar el nombre, la fecha y la hora de los eventos planeados. Además, podrás filtrar los eventos mediante facultades, seleccionando está en la parte superior y oprimiendo buscar.\n
+
+        \n2. Botón buscar:
+        Este botón despliega un cuadro de búsqueda la cual, insertando el nombre o código del evento, te llevara a su información directamente.\n
+        \n
+        3. Botón eventos inscritos:
+        Este botón despliega una lista de los eventos los cuales te hayas inscrito y te llegaran alertas en base a estos, como posibles cambios en su ubicación, fecha u horario. Para la inscripción de eventos simplemente tienes que buscar uno de tu interés y oprimir el botón “inscribirse”.\n
+        \n
+        La aplicación no almacena ningún dato personal y los eventos inscritos será guardados internamente en el dispositivo del usuario. Para las notificaciones de cambios acerca de los eventos, es necesaria la conexión a internet. La Universidad no se hace responsable de información desactualizada llegada a mostrarse en el aplicativo.
+    </string>
+    <string name="title_activity_about">About</string>
+
 </resources>

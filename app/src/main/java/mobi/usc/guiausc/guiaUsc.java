@@ -168,6 +168,12 @@ public class guiaUsc extends AppCompatActivity {
                 /** HAY QUE CERRAR EL DIALOGO, LUEGO DE HACER EL TOAST */
 
                 break;
+
+            case R.id.btnAbout:
+
+                    Intent intAbout = new Intent(getApplicationContext(), eventoAbout.class);
+                    startActivity(intAbout);
+                break;
         }
     }
 
