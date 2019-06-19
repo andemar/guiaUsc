@@ -10,6 +10,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -134,6 +135,12 @@ public class evento extends AppCompatActivity {
                     startActivity(acEvenHome);
                 }else
                     Toast.makeText(this, R.string.toastPEError1,Toast.LENGTH_LONG).show();
+
+                case R.id.btnEvUbicacion:
+
+                    Toast.makeText(this, "Entro al boton", Toast.LENGTH_SHORT).show();
+                    Intent acMapa = new Intent(getApplicationContext(), MapsActivity.class);
+                    startActivity(acMapa);
 
                 break;
 

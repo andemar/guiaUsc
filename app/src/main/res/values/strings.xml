@@ -76,5 +76,6 @@
         La aplicación no almacena ningún dato personal y los eventos inscritos será guardados internamente en el dispositivo del usuario. Para las notificaciones de cambios acerca de los eventos, es necesaria la conexión a internet. La Universidad no se hace responsable de información desactualizada llegada a mostrarse en el aplicativo.
     </string>
     <string name="title_activity_about">About</string>
+    <string name="title_activity_maps">Map</string>
 
 </resources>
