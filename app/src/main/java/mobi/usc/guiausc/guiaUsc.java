@@ -200,23 +200,25 @@ public class guiaUsc extends AppCompatActivity {
                         try {
                             JSONObject jo = response.getJSONObject(0);
                             respuesta[0] = (jo.getString("Nombre"));
-                            respuesta[1] = (jo.getString("Imagen"));
-                            respuesta[2] = (jo.getString("Fecha"));
-                            respuesta[3] = (jo.getString("Hora"));
-                            respuesta[4] = (jo.getString("Ponente"));
-                            respuesta[5] = (jo.getString("Descripcion"));
-                            respuesta[6] = (jo.getString("Ubicacion"));
+                            //respuesta[1] = (jo.getString("Imagen"));
+                            respuesta[1] = (jo.getString("Fecha"));
+                            respuesta[2] = (jo.getString("Hora"));
+                            respuesta[3] = (jo.getString("Ponente"));
+                            respuesta[4] = (jo.getString("Descripcion"));
+                            respuesta[5] = (jo.getString("Ubicacion"));
+                            respuesta[6] = (jo.getString("Facultad"));
                             //Intent con datos, a la clase evento
                             Intent acHomeEven = new Intent(getApplicationContext(), evento.class);
                             //Datos = 0, significa que los datos de entrada, son traidos de la DB.
                             acHomeEven.putExtra("datos", 0);
                             acHomeEven.putExtra("Nombre",       respuesta[0]);
-                            acHomeEven.putExtra("Imagen",       respuesta[1]);
-                            acHomeEven.putExtra("Fecha",        respuesta[2]);
-                            acHomeEven.putExtra("Hora",         respuesta[3]);
-                            acHomeEven.putExtra("Ponente",      respuesta[4]);
-                            acHomeEven.putExtra("Descripcion",  respuesta[5]);
-                            acHomeEven.putExtra("Ubicacion",    respuesta[6]);
+                            //acHomeEven.putExtra("Imagen",       respuesta[1]);
+                            acHomeEven.putExtra("Fecha",        respuesta[1]);
+                            acHomeEven.putExtra("Hora",         respuesta[2]);
+                            acHomeEven.putExtra("Ponente",      respuesta[3]);
+                            acHomeEven.putExtra("Descripcion",  respuesta[4]);
+                            acHomeEven.putExtra("Ubicacion",    respuesta[5]);
+                            acHomeEven.putExtra("Facultad", respuesta[6]);
                             startActivity(acHomeEven);
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -226,7 +228,7 @@ public class guiaUsc extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getApplicationContext(), "Linea: 213: " + R.string.toastPPError3, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), R.string.toastPPError3, Toast.LENGTH_SHORT).show();
                     }
                 }
         );
@@ -281,22 +283,24 @@ public class guiaUsc extends AppCompatActivity {
                         try {
                             JSONObject jo = response.getJSONObject(0);
                             respuesta[0] = (jo.getString("Nombre"));
-                            respuesta[1] = (jo.getString("Imagen"));
-                            respuesta[2] = (jo.getString("Fecha"));
-                            respuesta[3] = (jo.getString("Hora"));
-                            respuesta[4] = (jo.getString("Ponente"));
-                            respuesta[5] = (jo.getString("Descripcion"));
-                            respuesta[6] = (jo.getString("Ubicacion"));
+                            ///respuesta[1] = (jo.getString("Imagen"));
+                            respuesta[1] = (jo.getString("Fecha"));
+                            respuesta[2] = (jo.getString("Hora"));
+                            respuesta[3] = (jo.getString("Ponente"));
+                            respuesta[4] = (jo.getString("Descripcion"));
+                            respuesta[5] = (jo.getString("Ubicacion"));
+                            respuesta[6] = (jo.getString("Facultad"));
                             //Intent con datos, a la clase evento
                             Intent acHomeEven = new Intent(getApplicationContext(), evento.class);
                             acHomeEven.putExtra("datos", 1);
                             acHomeEven.putExtra("Nombre",       respuesta[0]);
-                            acHomeEven.putExtra("Imagen",       respuesta[1]);
-                            acHomeEven.putExtra("Fecha",        respuesta[2]);
-                            acHomeEven.putExtra("Hora",         respuesta[3]);
-                            acHomeEven.putExtra("Ponente",      respuesta[4]);
-                            acHomeEven.putExtra("Descripcion",  respuesta[5]);
-                            acHomeEven.putExtra("Ubicacion",    respuesta[6]);
+                            //acHomeEven.putExtra("Imagen",       respuesta[1]);
+                            acHomeEven.putExtra("Fecha",        respuesta[1]);
+                            acHomeEven.putExtra("Hora",         respuesta[2]);
+                            acHomeEven.putExtra("Ponente",      respuesta[3]);
+                            acHomeEven.putExtra("Descripcion",  respuesta[4]);
+                            acHomeEven.putExtra("Ubicacion",    respuesta[5]);
+                            acHomeEven.putExtra("Facultad",     respuesta[6]);
                             startActivity(acHomeEven);
                         } catch (JSONException e) {
                             e.printStackTrace();

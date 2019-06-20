@@ -76,7 +76,7 @@ public class calendario extends AppCompatActivity {
 
                 String seleccionFacultad = spFacultad.getSelectedItem().toString();
                 //Toast.makeText(this, "Seleccione: " + seleccionFacultad,Toast.LENGTH_SHORT).show();
-                /**Si el usuario selecciona la primera opcion TODO, se obtendran la totalidad e ventos.
+                /**Si el usuario selecciona la primera opcion TOD0, se obtendran la totalidad e ventos.
                  * De lo contrario, se buscara dependiendo la facultad que el usuario haya escodigo.
                  */
                 if(spFacultad.getSelectedItem().equals(facultades[0])){
@@ -94,7 +94,7 @@ public class calendario extends AppCompatActivity {
     //Metodo que obtiene la totalidad de eventos
     public void listaInicial(){
 
-        //Toast.makeText(this, "Entre a todo", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "Entre a tod0", Toast.LENGTH_SHORT).show();
 
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
         JsonArrayRequest jar = new JsonArrayRequest(
@@ -191,18 +191,11 @@ public class calendario extends AppCompatActivity {
 
 
 
-
-
-
-
-
-
-
-
     public void buscarNombreLista(int posicion){
 
         String[] evento = lvEventos.getItemAtPosition(posicion).toString().split("-");
         String nombre = evento[0].trim();
+        //Extraigo el nombre del evento seleccionado por el usuario de la lista.
         //Toast.makeText(this, "Seleccionaste: " + nombre, Toast.LENGTH_SHORT).show();
 
         final String[] respuesta = new String[7];
@@ -218,23 +211,25 @@ public class calendario extends AppCompatActivity {
                         try {
                             JSONObject jo = response.getJSONObject(0);
                             respuesta[0] = (jo.getString("Nombre"));
-                            respuesta[1] = (jo.getString("Imagen"));
-                            respuesta[2] = (jo.getString("Fecha"));
-                            respuesta[3] = (jo.getString("Hora"));
-                            respuesta[4] = (jo.getString("Ponente"));
-                            respuesta[5] = (jo.getString("Descripcion"));
-                            respuesta[6] = (jo.getString("Ubicacion"));
+                            //respuesta[1] = (jo.getString("Imagen"));
+                            respuesta[1] = (jo.getString("Fecha"));
+                            respuesta[2] = (jo.getString("Hora"));
+                            respuesta[3] = (jo.getString("Ponente"));
+                            respuesta[4] = (jo.getString("Descripcion"));
+                            respuesta[5] = (jo.getString("Ubicacion"));
+                            respuesta[6] = (jo.getString("Facultad"));
                             //Intent con datos, a la clase evento
                             Intent acHomeEven = new Intent(getApplicationContext(), evento.class);
                             //Datos = 0, significa que los datos de entrada, son traidos de la DB.
                             acHomeEven.putExtra("datos", 0);
                             acHomeEven.putExtra("Nombre",       respuesta[0]);
-                            acHomeEven.putExtra("Imagen",       respuesta[1]);
-                            acHomeEven.putExtra("Fecha",        respuesta[2]);
-                            acHomeEven.putExtra("Hora",         respuesta[3]);
-                            acHomeEven.putExtra("Ponente",      respuesta[4]);
-                            acHomeEven.putExtra("Descripcion",  respuesta[5]);
-                            acHomeEven.putExtra("Ubicacion",    respuesta[6]);
+                            //acHomeEven.putExtra("Imagen",       respuesta[1]);
+                            acHomeEven.putExtra("Fecha",        respuesta[1]);
+                            acHomeEven.putExtra("Hora",         respuesta[2]);
+                            acHomeEven.putExtra("Ponente",      respuesta[3]);
+                            acHomeEven.putExtra("Descripcion",  respuesta[4]);
+                            acHomeEven.putExtra("Ubicacion",    respuesta[5]);
+                            acHomeEven.putExtra("Facultad",     respuesta[6]);
                             startActivity(acHomeEven);
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -251,10 +246,6 @@ public class calendario extends AppCompatActivity {
         requestQueue.add(jar);
 
     }
-
-
-
-
 
 
 
