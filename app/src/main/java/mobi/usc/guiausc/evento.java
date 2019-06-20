@@ -25,6 +25,15 @@ import java.io.ByteArrayOutputStream;
 
 public class evento extends AppCompatActivity {
 
+    //----------NOMBRE DE LAS FACULTADES--------------//
+    private String cieBasicas = "Ciencias basicas";
+    private String cieEconomicas = "Ciencias economicas";
+    private String coSocial = "Comunicacion social";
+    private String derecho = "Derecho";
+    private String ingenieria = "Ingenieria";
+    private String lenguas = "Lenguas";
+    private String salud = "Salud";
+
     //---------ATRIBUTOS DEL LAYOUT--------------//
     private TextView    nombreEvento, fechaEvento, horaEvento, descripcionEvento;
     private Button      btnUbicacionEvento, btnInscribirse, btnEliminar;
@@ -108,15 +117,16 @@ public class evento extends AppCompatActivity {
                      * Luego se convierte a un array de byte, mediante byteArrayOutputStream
                      * y se almacena en una variable byte[] que sera ingresada al SQLite
                      * y se limpia el outputStream.
-                     */
+
                     Bitmap bitmap = ((BitmapDrawable)imagenEvento.getDrawable()).getBitmap();
                     ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                    /** CUIDADO CON LAS IMAGENES PNG !!!!!! */
+                    //CUIDADO CON LAS IMAGENES PNG !!!!!!
                     bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
                     byte[] imagen = stream.toByteArray();
                     registro.put("Imagen", imagen);
-                    /**FIN*/
 
+                    FIN*/
+                    registro.put("Facultad",    getIntent().getStringExtra("Facultad"));
                     registro.put("Fecha",       fechaEvento.getText().toString());
                     registro.put("Hora",        horaEvento.getText().toString());
                     registro.put("Ubicacion",   btnUbicacionEvento.getText().toString());
@@ -133,16 +143,19 @@ public class evento extends AppCompatActivity {
                     //bitmap.recycle();
                     Intent acEvenHome = new Intent(getApplicationContext(), guiaUsc.class);
                     startActivity(acEvenHome);
+
                 }else
                     Toast.makeText(this, R.string.toastPEError1,Toast.LENGTH_LONG).show();
 
-                case R.id.btnEvUbicacion:
+            break;
 
-                    Toast.makeText(this, "Entro al boton", Toast.LENGTH_SHORT).show();
+            case R.id.btnEvUbicacion:
+
+                    Toast.makeText(this, "Entro al mapa", Toast.LENGTH_SHORT).show();
                     Intent acMapa = new Intent(getApplicationContext(), MapsActivity.class);
                     startActivity(acMapa);
 
-                break;
+            break;
 
             case R.id.btnEvElimintar:
 
@@ -157,20 +170,20 @@ public class evento extends AppCompatActivity {
                 }else
                     Toast.makeText(this, R.string.toastPPError6, Toast.LENGTH_SHORT).show();
 
-                break;
+            break;
 
             case R.id.btnEvCancelar:
                 //Toast.makeText(getApplicationContext(), "BtnCancelar", Toast.LENGTH_SHORT).show();
                 Intent acEvenHome = new Intent(getApplicationContext(), guiaUsc.class);
                 startActivity(acEvenHome);
-                break;
+            break;
         }
     }
 
     public void datosDB(){
         nombreEvento.setText(getIntent().getStringExtra("Nombre"));
 
-        /**IMAGEN*/
+        /**IMAGEN
         String urlImagen = getIntent().getStringExtra("Imagen");
         if(urlImagen.isEmpty()){
             urlImagen = "Error";
@@ -179,7 +192,25 @@ public class evento extends AppCompatActivity {
                 .load(urlImagen)
                 //.resize(100,100)
                 .error(R.drawable.ic_launcher_background)
-                .into(imagenEvento);
+                .into(imagenEvento);*/
+
+        //Imagen del evento dependiendo de la facultad.
+        String facultad = getIntent().getStringExtra("Facultad");
+        if(facultad.equals(cieBasicas)){
+            imagenEvento.setImageResource(R.drawable.ciencias_basicas);
+        }else if(facultad.equals(cieEconomicas)){
+            imagenEvento.setImageResource(R.drawable.ciencias_economicas);
+        }else if(facultad.equals(coSocial)){
+            imagenEvento.setImageResource(R.drawable.comunicacion_social);
+        }else if(facultad.equals(derecho)){
+            imagenEvento.setImageResource(R.drawable.derecho);
+        }else if(facultad.equals(ingenieria)){
+            imagenEvento.setImageResource(R.drawable.ingenieria);
+        }else if(facultad.equals(lenguas)){
+            imagenEvento.setImageResource(R.drawable.lenguas);
+        }else if(facultad.equals(salud)){
+            imagenEvento.setImageResource(R.drawable.salud);
+        }
 
         horaEvento.setText(getIntent().getStringExtra("Hora"));
         fechaEvento.setText(getIntent().getStringExtra("Fecha"));
@@ -199,8 +230,8 @@ public class evento extends AppCompatActivity {
     public void datosSQLite(String nombre){
         conexion = new eventosSQLite(this, NOMBRE_DB, null, 1);
         SQLiteDatabase db = conexion.getReadableDatabase();
-
-        Cursor fila = db.rawQuery("SELECT Imagen, Fecha, Hora, Ubicacion, Ponente, Descripcion, FechaCambio, HoraCambio, UbicacionCambio FROM "+NOMBRE_TABLA+" WHERE Nombre ='"+nombre+"'", null);
+                                        //SELECT Imagen, Fecha....
+        Cursor fila = db.rawQuery("SELECT Facultad, Fecha, Hora, Ubicacion, Ponente, Descripcion, FechaCambio, HoraCambio, UbicacionCambio FROM "+NOMBRE_TABLA+" WHERE Nombre ='"+nombre+"'", null);
 
         if(fila.moveToFirst()){
             nombreEvento.setText(nombre);
@@ -209,11 +240,29 @@ public class evento extends AppCompatActivity {
              * Se extrame mediante getBlob
              * Se convierte de byte a bitmap, mediante bitmapFactory....
              * y el bitmap resultante se inserta al ImageView
-             * */
-            byte[] imagen = fila.getBlob(0);
-            Bitmap bmp = BitmapFactory.decodeByteArray(imagen, 0, imagen.length);
-            imagenEvento.setImageBitmap(bmp);
-            /**FIN*/
+             *
+             * byte[] imagen = fila.getBlob(0);
+             * Bitmap bmp = BitmapFactory.decodeByteArray(imagen, 0, imagen.length);
+             * imagenEvento.setImageBitmap(bmp);
+            FIN*/
+            //Dependiendo la facultad, es su imagen.
+            String facultad = fila.getString(0);
+            if(facultad.equals(cieBasicas)){
+                imagenEvento.setImageResource(R.drawable.ciencias_basicas);
+            }else if(facultad.equals(cieEconomicas)){
+                imagenEvento.setImageResource(R.drawable.ciencias_economicas);
+            }else if(facultad.equals(coSocial)){
+                imagenEvento.setImageResource(R.drawable.comunicacion_social);
+            }else if(facultad.equals(derecho)){
+                imagenEvento.setImageResource(R.drawable.derecho);
+            }else if(facultad.equals(ingenieria)){
+                imagenEvento.setImageResource(R.drawable.ingenieria);
+            }else if(facultad.equals(lenguas)){
+                imagenEvento.setImageResource(R.drawable.lenguas);
+            }else if(facultad.equals(salud)){
+                imagenEvento.setImageResource(R.drawable.salud);
+            }
+
             fechaEvento.setText(fila.getString(1));
             horaEvento.setText(fila.getString(2));
             btnUbicacionEvento.setText(fila.getString(3));
