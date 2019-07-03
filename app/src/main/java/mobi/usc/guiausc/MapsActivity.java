@@ -85,6 +85,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         rutaexiste = false;
 
         Log.d(TAG, "onCreate: se creo");
+
         
         nFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
 
@@ -175,15 +176,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         //Crea el nuevo GroundOverlay con las coordenadas de la universidad y agrega la imagen
         //del plano desde la carpeta res/drawable
-        GroundOverlayOptions USCMapa = new GroundOverlayOptions()
+        /*GroundOverlayOptions USCMapa = new GroundOverlayOptions()
                 .image(BitmapDescriptorFactory.fromResource(R.drawable.planocampus))
                 .positionFromBounds(boundsCampusUSCPampalinda);
+                */
 
         //.position(USC, 8600f, 6500f);
 
         //Se agrega el GroundOverlay al mapa
-        final GroundOverlay overlayCapusPampalinda = mMap.addGroundOverlay(USCMapa);
-
+        /*final GroundOverlay overlayCapusPampalinda = mMap.addGroundOverlay(USCMapa);
+        */
 
         //Crea el nuevo GroundOverlay con las coordenadas del bloque 2 y agrega la imagen
         //del plano del piso 1 desde la carpeta res/drawable
@@ -276,7 +278,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                 if (boundsBloque2.contains(mapClick)) {
 
-                    overlayCapusPampalinda.setTransparency(0.5f);
+                   // overlayCapusPampalinda.setTransparency(0.5f);
                     overlayBloque2P1.setTransparency(0);
                     btnUp.setVisibility(View.VISIBLE);
                     focusBloque = true;
