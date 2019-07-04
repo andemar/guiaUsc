@@ -100,8 +100,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         txtlong.setText("0");
         txtlong.setVisibility(View.INVISIBLE);
 
-        btnUp.setVisibility(View.INVISIBLE);
-        btnDown.setVisibility(View.INVISIBLE);
+        btnUp.setVisibility(View.VISIBLE);
+        btnDown.setVisibility(View.VISIBLE);
 
         instance = this;
 
@@ -223,6 +223,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onMapClick(LatLng mapClick) {
 
+                linea = mMap.addPolyline(new PolylineOptions().color(Color.BLUE));
+
+                List<LatLng> lista = linea.getPoints();
+
+                lista.add(new LatLng(3.403537634373293, -76.54709509573416));
+                lista.add(new LatLng(3.4039620145489606, -76.54714002273516));
+
+                linea.setPoints(lista);
 
                 getUltimaPosicion();
 
@@ -258,9 +266,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                     LatLng coord;
 
+
+                    /*
                     linea = mMap.addPolyline(new PolylineOptions().color(Color.BLUE));
 
                     List<LatLng> lista = linea.getPoints();
+
+
+
+                    //for para llenar los puntos
 
                     for (int i = 1; i < listafinal.size(); i++) {
 
@@ -272,8 +286,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                     }
 
-                    linea.setPoints(lista);
 
+
+
+
+                    linea.setPoints(lista);
+                    */
                 }
 
                 //Log.d(TAG, "onMapClick: lat"+inicio.latitude+"long"+inicio.longitude);
