@@ -81,6 +81,10 @@ public class Ruteador {
                 new Salon(2, 2, 3.403276268205102, -76.54750473797321, "15");
         salones.add(salon16);
 
+        Salon salon17 =
+                new Salon(2, 2, 3.4034800922428783, -76.54785864290494, "17");
+        salones.add(salon17);
+
         grafo = new Grafo<Salon>();
 
         grafo.addVertex(salon1);
@@ -115,6 +119,8 @@ public class Ruteador {
 
         grafo.addVertex(salon16);
 
+        grafo.addVertex(salon17);
+
         grafo.addEdge(salon1, salon3);
 
         grafo.addEdge(salon1, salon2);
@@ -139,7 +145,9 @@ public class Ruteador {
 
         grafo.addEdge(salon8, salon9);
 
-        grafo.addEdge(salon10, salon12);
+        grafo.addEdge(salon10, salon17);
+
+        grafo.addEdge(salon17, salon12);
 
         grafo.addEdge(salon12, salon11);
 

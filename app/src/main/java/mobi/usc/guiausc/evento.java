@@ -153,6 +153,7 @@ public class evento extends AppCompatActivity {
 
                     Toast.makeText(this, "Entro al mapa", Toast.LENGTH_SHORT).show();
                     Intent acMapa = new Intent(getApplicationContext(), MapsActivity.class);
+                    acMapa.putExtra("Salon", btnUbicacionEvento.getText().toString());
                     startActivity(acMapa);
 
             break;

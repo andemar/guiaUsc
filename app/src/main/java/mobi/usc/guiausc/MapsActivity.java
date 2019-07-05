@@ -53,21 +53,28 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private View btnUp;
     private View btnDown;
-    private Button btnDestino;
+    //private Button btnDestino;
 
     private TextView txtlat;
     private TextView txtlong;
 
     Polyline linea;
+    List<LatLng> listaPuntos;
+    ArrayList<Salon> listaPiso0;
+    ArrayList<Salon> listaPiso1;
+    ArrayList<Salon> listaPiso2;
+    ArrayList<Salon> listaPiso3;
+
 
     private static final int PISOS_BLOQUE2 = 1;
 
     private int pisoActual;
     private int limiteActual;
-    private String destino = "15";
+    private String destino;
     private String origen;
     private static final String TAG = "MapsActivity";
     private boolean rutaexiste;
+    private boolean lineaLanzamiento;
 
 
 
@@ -82,6 +89,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
+        lineaLanzamiento = false;
         rutaexiste = false;
 
         Log.d(TAG, "onCreate: se creo");
@@ -91,7 +99,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         btnUp = (Button) findViewById(R.id.buttonSubir);
         btnDown = (Button) findViewById(R.id.buttonBajar);
-        btnDestino = (Button) findViewById(R.id.btnEvUbicacion);
+        //btnDestino = (Button) findViewById(R.id.btnEvUbicacion);
+
+        destino = getIntent().getStringExtra("Salon");
 
         txtlat = (TextView) findViewById(R.id.textolat);
         txtlat.setText("0");
@@ -107,12 +117,24 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         focusBloque = false;
 
+        listaPiso0 = new ArrayList<Salon>();
+        listaPiso1 = new ArrayList<Salon>();
+        listaPiso2 = new ArrayList<Salon>();
+        listaPiso3 = new ArrayList<Salon>();
+
+        //TODO
+        limiteActual = 3;
+
         btnUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                bloqueActual[pisoActual].setTransparency(1);
+
+                //bloqueActual[pisoActual].setTransparency(1);
                 pisoActual++;
-                bloqueActual[pisoActual].setTransparency(0);
+
+                Log.d(TAG, "Piso up: "+pisoActual);
+                //bloqueActual[pisoActual].setTransparency(0);
+                setPuntosPiso(linea, pisoActual);
                 buttonVisible();
             }
         });
@@ -120,9 +142,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         btnDown.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                bloqueActual[pisoActual].setTransparency(1);
+
+                //bloqueActual[pisoActual].setTransparency(1);
                 pisoActual--;
-                bloqueActual[pisoActual].setTransparency(0);
+
+                Log.d(TAG, "Piso down: "+pisoActual);
+                //bloqueActual[pisoActual].setTransparency(0);
+                setPuntosPiso(linea, pisoActual);
                 buttonVisible();
             }
         });
@@ -223,15 +249,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onMapClick(LatLng mapClick) {
 
-                linea = mMap.addPolyline(new PolylineOptions().color(Color.BLUE));
-
-                List<LatLng> lista = linea.getPoints();
-
-                lista.add(new LatLng(3.403537634373293, -76.54709509573416));
-                lista.add(new LatLng(3.4039620145489606, -76.54714002273516));
-
-                linea.setPoints(lista);
-
                 getUltimaPosicion();
 
 
@@ -254,49 +271,62 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         Log.d(TAG, "onMapClick: inicio existe "+inicio.latitude+" -long "+inicio.longitude);
                     }
 
-                    Salon origen = ruteador.masCercano(inicio);
-
-                    Log.d(TAG, "onMapClick: nodo mas cercano"+ruteador.masCercano(inicio).getCodigo());
-
-                    String CodigoDestino = btnDestino.getText().toString();
-
-                    Salon destino = ruteador.buscarSalon(CodigoDestino);
-
-                    ArrayList<Salon> listafinal = ruteador.enrutar(destino, origen);
-
-                    LatLng coord;
+                    //Enrutamiento y pintada de primera linea
+                    if(lineaLanzamiento==false) {
 
 
+                        Salon origen = ruteador.masCercano(inicio);
+
+                        Log.d(TAG, "onMapClick: nodo mas cercano" + ruteador.masCercano(inicio).getCodigo());
+
+                        Log.d(TAG, "btnDestino: " + destino);
+
+                        String CodigoDestino = destino;
+
+                        Salon destino = ruteador.buscarSalon(CodigoDestino);
+
+                        ArrayList<Salon> listafinal = ruteador.enrutar(destino, origen);
+
+                        LatLng coord;
+
+                        linea = mMap.addPolyline(new PolylineOptions().color(Color.BLUE));
+
+                        listaPuntos = linea.getPoints();
+
+                        //metodo para separar los pisos
+
+                        setListasPisos(listafinal);
+
+                        //for para llenar los puntos del piso 0
                     /*
-                    linea = mMap.addPolyline(new PolylineOptions().color(Color.BLUE));
+                    for (int i = 1; i < listaPiso0.size(); i++) {
 
-                    List<LatLng> lista = linea.getPoints();
+                        coord = new LatLng(listaPiso0.get(i).getLatitud(), listaPiso0.get(i).getLongitud());
 
-
-
-                    //for para llenar los puntos
-
-                    for (int i = 1; i < listafinal.size(); i++) {
-
-                        coord = new LatLng(listafinal.get(i).getLatitud(), listafinal.get(i).getLongitud());
-
-                        lista.add(coord);
+                        listaPuntos.add(coord);
 
                         coord = null;
 
                     }
-
-
-
-
-
-                    linea.setPoints(lista);
                     */
+                        setPuntosPiso(linea, 1);
+
+                        linea.setPoints(listaPuntos);
+
+                        pisoActual = 1;
+
+                        lineaLanzamiento=true;
+
+                    }
                 }
 
                 //Log.d(TAG, "onMapClick: lat"+inicio.latitude+"long"+inicio.longitude);
 
 
+                //Cuando hacen tap en el bloque 2 transparentar el plano general y mostrar el plano del bloque
+                //en el piso 0
+
+                /*
                 if (boundsBloque2.contains(mapClick)) {
 
                    // overlayCapusPampalinda.setTransparency(0.5f);
@@ -307,23 +337,130 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     limiteActual = PISOS_BLOQUE2;
                     bloqueActual = overlayPisosBloque2;
 
-
                 } else {
 
 
                 }
+                */
 
             }
         });
     }
 
 
+    private void setListasPisos(ArrayList<Salon> listafinal) {
+
+        for (int i = 0; i < listafinal.size(); i++) {
+
+            Log.d(TAG, "setListasPisoslistaenrutada: "+listafinal.get(i).getCodigo());
+
+            if(listafinal.get(i).getPiso()==0){
+
+
+                listaPiso0.add(listafinal.get(i));
+                Log.d(TAG, "setListasPisos0: objeto"+i);
+
+            }else if(listafinal.get(i).getPiso()==1){
+
+                listaPiso1.add(listafinal.get(i));
+                Log.d(TAG, "setListasPisos1: objeto"+i);
+
+            }else if(listafinal.get(i).getPiso()==2){
+
+                listaPiso2.add(listafinal.get(i));
+                Log.d(TAG, "setListasPisos2: objeto"+i);
+
+            }else if(listafinal.get(i).getPiso()==3){
+
+                listaPiso3.add(listafinal.get(i));
+                Log.d(TAG, "setListasPisos3: objeto"+i);
+
+            }
+
+        }
+
+    }
+
+    //TODO
+    private void setPuntosPiso(Polyline linea, int pisoActual) {
+
+        LatLng coord;
+
+        listaPuntos.clear();
+
+        if(pisoActual==0){
+
+            for (int i = 0; i < listaPiso0.size(); i++) {
+
+                coord = new LatLng(listaPiso0.get(i).getLatitud(), listaPiso0.get(i).getLongitud());
+
+                listaPuntos.add(coord);
+
+                //Log.d(TAG, "setPuntosPiso0: objeto:"+i);
+
+                coord = null;
+
+            }
+
+            linea.setPoints(listaPuntos);
+
+        }else if(pisoActual==1){
+
+            for (int i = 0; i < listaPiso1.size(); i++) {
+
+                coord = new LatLng(listaPiso1.get(i).getLatitud(), listaPiso1.get(i).getLongitud());
+
+                listaPuntos.add(coord);
+
+                Log.d(TAG, "setPuntosPiso1: objeto:"+i);
+
+                coord = null;
+
+            }
+
+            linea.setPoints(listaPuntos);
+
+        }else if (pisoActual==2){
+
+            for (int i = 0; i < listaPiso2.size(); i++) {
+
+                coord = new LatLng(listaPiso2.get(i).getLatitud(), listaPiso2.get(i).getLongitud());
+
+                listaPuntos.add(coord);
+
+                Log.d(TAG, "setPuntosPiso2: objeto:"+i+"Salon"+listaPiso2.get(i).getCodigo());
+
+                coord = null;
+
+            }
+
+            linea.setPoints(listaPuntos);
+
+        }else if(pisoActual==3){
+
+            for (int i = 0; i < listaPiso3.size(); i++) {
+
+                coord = new LatLng(listaPiso3.get(i).getLatitud(), listaPiso3.get(i).getLongitud());
+
+                listaPuntos.add(coord);
+
+                //Log.d(TAG, "setPuntosPiso3: objeto:"+i);
+
+                coord = null;
+
+            }
+
+            linea.setPoints(listaPuntos);
+        }
+
+    }
+
     private void buttonVisible() {
 
         if (pisoActual == limiteActual) {
             btnUp.setVisibility(View.INVISIBLE);
             btnDown.setVisibility(View.VISIBLE);
-        } else if (pisoActual == 0) {
+        } else if (pisoActual == 1) {
             btnDown.setVisibility(View.INVISIBLE);
             btnUp.setVisibility(View.VISIBLE);
         } else {
