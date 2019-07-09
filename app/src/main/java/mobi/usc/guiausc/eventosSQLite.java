@@ -25,7 +25,7 @@ public class eventosSQLite extends SQLiteOpenHelper {
         db.execSQL("create table eventosInscritos(" +
                 " idEvento     String primary key," +
                 " Nombre       String,"  +
-                " Imagen       BLOB,"    +
+                " Facultad     String,"  +
                 " Fecha        String,"  +
                 " Hora         String,"  +
                 " Ubicacion    String,"  +

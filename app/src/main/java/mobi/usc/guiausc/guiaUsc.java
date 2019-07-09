@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.ConnectivityManager;
@@ -29,6 +30,7 @@ import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 public class guiaUsc extends AppCompatActivity {
 
@@ -51,6 +53,8 @@ public class guiaUsc extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        //Bloquear las pantallas de forma vertical
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_guia_usc);
         //Metodo que elimina eventos, que hayan pasado.
@@ -60,8 +64,9 @@ public class guiaUsc extends AppCompatActivity {
     }
 
 
-    //-------------------- METODO ONCLICK PARA BOTONES ------------------------//
+    /** ALERTA PARA DECIR QUE UN EVENTO INSCRITO, YA SE VA A REALIZAR, 1 DIA DE POR MEDIO */
 
+    //-------------------- METODO ONCLICK PARA BOTONES ------------------------//
     public void onClickGuiaUsc(View view) {
         switch (view.getId()) {
             case R.id.btnCalendario:
@@ -98,25 +103,33 @@ public class guiaUsc extends AppCompatActivity {
                 //Toast.makeText(this, "eventoIns", Toast.LENGTH_SHORT).show();
                 String[] nombres = getNombreEventos();
 
-                final CharSequence[] lista = nombres;
-                AlertDialog.Builder builderInsc = new AlertDialog.Builder(this);
-                builderInsc.setTitle("Eventos inscritos");
-                builderInsc.setItems(lista, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int item) {
-                        //Toast.makeText(getApplicationContext(), "Has elegido la opcion: " + lista[item], Toast.LENGTH_SHORT).show();
+                if(nombres.length == 0){
+                    Toast.makeText(this, R.string.toastPPError7, Toast.LENGTH_SHORT).show();
+                }else {
+                    final CharSequence[] lista = nombres;
+                    AlertDialog.Builder builderInsc = new AlertDialog.Builder(this);
+                    builderInsc.setTitle("Eventos inscritos");
+                    builderInsc.setItems(lista, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int item) {
+                            //Toast.makeText(getApplicationContext(), "Has elegido la opcion: " + lista[item], Toast.LENGTH_SHORT).show();
 
-                        //Enviar el intent con el nombre a evento.
-                        Intent acHomeEv = new Intent(getApplicationContext(), evento.class);
-                        //Se ingresa el numero 2, para indicar que los datos son de la lista.
-                        acHomeEv.putExtra("datos", 2);
-                        acHomeEv.putExtra("Nombre", lista[item]);
-                        startActivity(acHomeEv);
-                        dialog.cancel();
-                    }
-                });
-                AlertDialog ventanaInsc = builderInsc.create();
-                ventanaInsc.show();
+                            //Enviar el intent con el nombre a evento.
+                            Intent acHomeEv = new Intent(getApplicationContext(), evento.class);
+                            //Se ingresa el numero 2, para indicar que los datos son de la lista.
+                            acHomeEv.putExtra("datos", 2);
+                            acHomeEv.putExtra("Nombre", lista[item]);
+                            startActivity(acHomeEv);
+                            dialog.cancel();
+                        }
+                    });
+                    AlertDialog ventanaInsc = builderInsc.create();
+                    //Inicio de color en la ventana
+                    ventanaInsc.getWindow().setBackgroundDrawableResource(R.color.colorPrimary);
+                    ventanaInsc.getListView().setBackgroundColor(getResources().getColor(R.color.colorLista));
+                    //Fin de color
+                    ventanaInsc.show();
+                }
                 break;
 
             //Los case posteriores hacen referencia a los botones de loa cuadros de dialogo.
@@ -155,6 +168,12 @@ public class guiaUsc extends AppCompatActivity {
                 /** HAY QUE CERRAR EL DIALOGO, LUEGO DE HACER EL TOAST */
 
                 break;
+
+            case R.id.btnAbout:
+
+                    Intent intAbout = new Intent(getApplicationContext(), eventoAbout.class);
+                    startActivity(intAbout);
+                break;
         }
     }
 
@@ -172,7 +191,7 @@ public class guiaUsc extends AppCompatActivity {
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
         JsonArrayRequest jar = new JsonArrayRequest(
                 Request.Method.GET,
-                urlNombre + Nombre,
+                urlNombre + Nombre.replace(" ", "%20"),
                 null,
                 new Response.Listener<JSONArray>() {
                     @Override
@@ -181,23 +200,25 @@ public class guiaUsc extends AppCompatActivity {
                         try {
                             JSONObject jo = response.getJSONObject(0);
                             respuesta[0] = (jo.getString("Nombre"));
-                            respuesta[1] = (jo.getString("Imagen"));
-                            respuesta[2] = (jo.getString("Fecha"));
-                            respuesta[3] = (jo.getString("Hora"));
-                            respuesta[4] = (jo.getString("Ponente"));
-                            respuesta[5] = (jo.getString("Descripcion"));
-                            respuesta[6] = (jo.getString("Ubicacion"));
+                            //respuesta[1] = (jo.getString("Imagen"));
+                            respuesta[1] = (jo.getString("Fecha"));
+                            respuesta[2] = (jo.getString("Hora"));
+                            respuesta[3] = (jo.getString("Ponente"));
+                            respuesta[4] = (jo.getString("Descripcion"));
+                            respuesta[5] = (jo.getString("Ubicacion"));
+                            respuesta[6] = (jo.getString("Facultad"));
                             //Intent con datos, a la clase evento
                             Intent acHomeEven = new Intent(getApplicationContext(), evento.class);
                             //Datos = 0, significa que los datos de entrada, son traidos de la DB.
                             acHomeEven.putExtra("datos", 0);
                             acHomeEven.putExtra("Nombre",       respuesta[0]);
-                            acHomeEven.putExtra("Imagen",       respuesta[1]);
-                            acHomeEven.putExtra("Fecha",        respuesta[2]);
-                            acHomeEven.putExtra("Hora",         respuesta[3]);
-                            acHomeEven.putExtra("Ponente",      respuesta[4]);
-                            acHomeEven.putExtra("Descripcion",  respuesta[5]);
-                            acHomeEven.putExtra("Ubicacion",    respuesta[6]);
+                            //acHomeEven.putExtra("Imagen",       respuesta[1]);
+                            acHomeEven.putExtra("Fecha",        respuesta[1]);
+                            acHomeEven.putExtra("Hora",         respuesta[2]);
+                            acHomeEven.putExtra("Ponente",      respuesta[3]);
+                            acHomeEven.putExtra("Descripcion",  respuesta[4]);
+                            acHomeEven.putExtra("Ubicacion",    respuesta[5]);
+                            acHomeEven.putExtra("Facultad", respuesta[6]);
                             startActivity(acHomeEven);
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -219,7 +240,7 @@ public class guiaUsc extends AppCompatActivity {
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
         JsonArrayRequest jar = new JsonArrayRequest(
                 Request.Method.GET,
-                urlNombre + nombre,
+                urlNombre + nombre.replace(" ", "%20"),
                 null,
                 new Response.Listener<JSONArray>() {
                     @Override
@@ -262,22 +283,24 @@ public class guiaUsc extends AppCompatActivity {
                         try {
                             JSONObject jo = response.getJSONObject(0);
                             respuesta[0] = (jo.getString("Nombre"));
-                            respuesta[1] = (jo.getString("Imagen"));
-                            respuesta[2] = (jo.getString("Fecha"));
-                            respuesta[3] = (jo.getString("Hora"));
-                            respuesta[4] = (jo.getString("Ponente"));
-                            respuesta[5] = (jo.getString("Descripcion"));
-                            respuesta[6] = (jo.getString("Ubicacion"));
+                            ///respuesta[1] = (jo.getString("Imagen"));
+                            respuesta[1] = (jo.getString("Fecha"));
+                            respuesta[2] = (jo.getString("Hora"));
+                            respuesta[3] = (jo.getString("Ponente"));
+                            respuesta[4] = (jo.getString("Descripcion"));
+                            respuesta[5] = (jo.getString("Ubicacion"));
+                            respuesta[6] = (jo.getString("Facultad"));
                             //Intent con datos, a la clase evento
                             Intent acHomeEven = new Intent(getApplicationContext(), evento.class);
                             acHomeEven.putExtra("datos", 1);
                             acHomeEven.putExtra("Nombre",       respuesta[0]);
-                            acHomeEven.putExtra("Imagen",       respuesta[1]);
-                            acHomeEven.putExtra("Fecha",        respuesta[2]);
-                            acHomeEven.putExtra("Hora",         respuesta[3]);
-                            acHomeEven.putExtra("Ponente",      respuesta[4]);
-                            acHomeEven.putExtra("Descripcion",  respuesta[5]);
-                            acHomeEven.putExtra("Ubicacion",    respuesta[6]);
+                            //acHomeEven.putExtra("Imagen",       respuesta[1]);
+                            acHomeEven.putExtra("Fecha",        respuesta[1]);
+                            acHomeEven.putExtra("Hora",         respuesta[2]);
+                            acHomeEven.putExtra("Ponente",      respuesta[3]);
+                            acHomeEven.putExtra("Descripcion",  respuesta[4]);
+                            acHomeEven.putExtra("Ubicacion",    respuesta[5]);
+                            acHomeEven.putExtra("Facultad",     respuesta[6]);
                             startActivity(acHomeEven);
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -512,7 +535,6 @@ public class guiaUsc extends AppCompatActivity {
 
     /**Metodo que obtiene los datos de la lista y comprueba si el usuario tiene eventos inscritos y conexion a internet.*/
     private void comprobacionCambio(){
-
         String[] listaEventos = getNombreEventos();
 
         if(listaEventos.length == 0){
@@ -601,6 +623,8 @@ public class guiaUsc extends AppCompatActivity {
             consulta.close();
             escritura.close();
     }
+
+
 
 }
 
