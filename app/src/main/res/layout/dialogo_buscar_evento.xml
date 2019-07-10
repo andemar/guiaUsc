@@ -1,7 +1,7 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    android:layout_height="200dp"
     android:background="@color/colorVentana"
     android:orientation="vertical">
 
@@ -9,6 +9,7 @@
         android:id="@+id/tvDiagTitulo"
         android:layout_width="match_parent"
         android:layout_height="37dp"
+        android:layout_marginTop="0dp"
         android:background="@color/colorPrimary"
         android:gravity="center_vertical"
         android:text="@string/tituloDiaBuscarEvento"
@@ -21,9 +22,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="4dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="45dp"
         android:layout_marginRight="4dp"
-        android:layout_marginBottom="4dp"
         android:hint="@string/nombreEvento"
         android:inputType="text"
         android:textColor="@color/colorLetraPrincipal"
@@ -35,7 +35,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="4dp"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="90dp"
         android:layout_marginRight="4dp"
         android:layout_marginBottom="16dp"
         android:fontFamily="sans-serif"
@@ -46,8 +46,14 @@
         tools:text="@string/codigoEvento" />
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="48dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="5dp"
         android:orientation="horizontal">
 
         <Button
@@ -80,4 +86,4 @@
 
     </LinearLayout>
 
-</LinearLayout>
+</RelativeLayout>

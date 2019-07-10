@@ -111,13 +111,19 @@ public class calendario extends AppCompatActivity {
 
                             try {
                                 JSONObject jo = response.getJSONObject(i);
-                                temp += jo.getString("Nombre");
+                                /**temp += jo.getString("Nombre");
                                 temp += "   -   ";
                                 temp += jo.getString("Fecha");
                                 temp += "   -   ";
                                 temp += jo.getString("Hora");
+                                eventos[i] = temp;*/
+
+                                temp += jo.getString("Nombre");
+                                temp += "\n";
+                                temp += "Fecha: " + jo.getString("Fecha");
                                 eventos[i] = temp;
                                 temp = "";
+
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
@@ -131,7 +137,7 @@ public class calendario extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getApplicationContext(), "Linea: 213: " + R.string.toastPPError3, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "Linea: 140: " + R.string.toastPPError3, Toast.LENGTH_SHORT).show();
                     }
                 }
         );
@@ -161,12 +167,18 @@ public class calendario extends AppCompatActivity {
 
                             try {
                                 JSONObject jo = response.getJSONObject(i);
+                                /**temp += jo.getString("Nombre");
+                                 temp += "   -   ";
+                                 temp += jo.getString("Fecha");
+                                 temp += "   -   ";
+                                 temp += jo.getString("Hora");
+                                 eventos[i] = temp;*/
+
                                 temp += jo.getString("Nombre");
-                                temp += "   -   ";
-                                temp += jo.getString("Fecha");
-                                temp += "   -   ";
-                                temp += jo.getString("Hora");
+                                temp += "\n";
+                                temp += "Fecha: " + jo.getString("Fecha");
                                 eventos[i] = temp;
+
                                 temp = "";
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -193,7 +205,7 @@ public class calendario extends AppCompatActivity {
 
     public void buscarNombreLista(int posicion){
 
-        String[] evento = lvEventos.getItemAtPosition(posicion).toString().split("-");
+        String[] evento = lvEventos.getItemAtPosition(posicion).toString().split("\n");
         String nombre = evento[0].trim();
         //Extraigo el nombre del evento seleccionado por el usuario de la lista.
         //Toast.makeText(this, "Seleccionaste: " + nombre, Toast.LENGTH_SHORT).show();
@@ -239,7 +251,7 @@ public class calendario extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getApplicationContext(), "Linea: 213: " + R.string.toastPPError3, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "Linea: 248: " + R.string.toastPPError3, Toast.LENGTH_SHORT).show();
                     }
                 }
         );

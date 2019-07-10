@@ -14,6 +14,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -90,9 +91,17 @@ public class guiaUsc extends AppCompatActivity {
                     diaNombreEvento = (EditText) dialogo.findViewById(R.id.diaNombreEvento);
                     diaCodigoEvento = (EditText) dialogo.findViewById(R.id.diaCodigoEvento);
                     /**Fin*/
+
+                    /**Esto es para modificar el tamaño de la alerta*/
                     builderBuscar.setView(dialogo);
                     AlertDialog ventanaBuscar = builderBuscar.create();
                     ventanaBuscar.show();
+                    WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+                    lp.copyFrom(ventanaBuscar.getWindow().getAttributes());
+                    lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+                    lp.height = 750;
+                    ventanaBuscar.getWindow().setAttributes(lp);
+                    /**FIN*/
                 }else
                     Toast.makeText(this, R.string.toastPPError5,Toast.LENGTH_LONG).show();
 
