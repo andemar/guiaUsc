@@ -169,6 +169,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
 
+
+
+
         ruteador = new Ruteador();
 
         //Toast.makeText(instance, "Coordenadas de inicio, lat"+inicio.latitude + " long "+inicio.longitude, Toast.LENGTH_SHORT).show();
