@@ -51,9 +51,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private GroundOverlay[] bloqueActual;
     private GroundOverlay[] overlayPisosBloque2;
 
-    private View btnUp;
-    private View btnDown;
-    //private Button btnDestino;
+    private Button btnUp;
+    private Button btnDown;
+    private Button btnDestino;
 
     private TextView txtlat;
     private TextView txtlong;
@@ -98,8 +98,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         nFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
 
         btnUp = (Button) findViewById(R.id.buttonSubir);
+        btnUp.setVisibility(View.INVISIBLE );
         btnDown = (Button) findViewById(R.id.buttonBajar);
-        //btnDestino = (Button) findViewById(R.id.btnEvUbicacion);
+        btnDown.setVisibility(View.INVISIBLE);
+        btnDestino = (Button) findViewById(R.id.buttonDestino);
 
         destino = getIntent().getStringExtra("Salon");
 
@@ -150,6 +152,110 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 //bloqueActual[pisoActual].setTransparency(0);
                 setPuntosPiso(linea, pisoActual);
                 buttonVisible();
+            }
+        });
+
+        btnDestino.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                buttonVisible();
+
+                getUltimaPosicion();
+
+
+                if (txtlat.getText().equals("0")&&txtlong.getText().equals("0")&&rutaexiste==false){
+
+                }else {
+                    double latorigne = Double.parseDouble(txtlat.getText().toString());
+
+                    double longorigen = Double.parseDouble(txtlong.getText().toString());
+
+                    if (latorigne != 0 || longorigen != 0) {
+
+                        Log.d(TAG, "onMapClick: lat orgien" + latorigne + " long " + longorigen);
+                    }
+
+                    LatLng inicio = new LatLng(latorigne, longorigen);
+
+                    if(inicio!=null){
+
+                        Log.d(TAG, "onMapClick: inicio existe "+inicio.latitude+" -long "+inicio.longitude);
+                    }
+
+                    //Enrutamiento y pintada de primera linea
+                    if(lineaLanzamiento==false) {
+
+
+                        Salon origen = ruteador.masCercano(inicio);
+
+                        Log.d(TAG, "onMapClick: nodo mas cercano" + ruteador.masCercano(inicio).getCodigo());
+
+                        Log.d(TAG, "btnDestino: " + destino);
+
+                        String CodigoDestino = destino;
+
+                        Salon destino = ruteador.buscarSalon(CodigoDestino);
+
+                        ArrayList<Salon> listafinal = ruteador.enrutar(destino, origen);
+
+                        LatLng coord;
+
+                        linea = mMap.addPolyline(new PolylineOptions().color(Color.BLUE));
+
+                        listaPuntos = linea.getPoints();
+
+                        //metodo para separar los pisos
+
+                        setListasPisos(listafinal);
+
+                        //for para llenar los puntos del piso 0
+                    /*
+                    for (int i = 1; i < listaPiso0.size(); i++) {
+
+                        coord = new LatLng(listaPiso0.get(i).getLatitud(), listaPiso0.get(i).getLongitud());
+
+                        listaPuntos.add(coord);
+
+                        coord = null;
+
+                    }
+                    */
+                        setPuntosPiso(linea, 1);
+
+                        linea.setPoints(listaPuntos);
+
+                        pisoActual = 1;
+
+                        lineaLanzamiento=true;
+
+                    }
+                }
+
+                //Log.d(TAG, "onMapClick: lat"+inicio.latitude+"long"+inicio.longitude);
+
+
+                //Cuando hacen tap en el bloque 2 transparentar el plano general y mostrar el plano del bloque
+                //en el piso 0
+
+                /*
+                if (boundsBloque2.contains(mapClick)) {
+
+                   // overlayCapusPampalinda.setTransparency(0.5f);
+                    //overlayBloque2P1.setTransparency(0);
+                    btnUp.setVisibility(View.VISIBLE);
+                    focusBloque = true;
+                    pisoActual = 0;
+                    limiteActual = PISOS_BLOQUE2;
+                    bloqueActual = overlayPisosBloque2;
+
+                } else {
+
+
+                }
+                */
+
+
             }
         });
 
@@ -246,108 +352,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(USC, 20.0f));
 
 
-
-
-        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
-            @Override
-            public void onMapClick(LatLng mapClick) {
-
-                getUltimaPosicion();
-
-
-                if (txtlat.getText().equals("0")&&txtlong.getText().equals("0")&&rutaexiste==false){
-
-                }else {
-                    double latorigne = Double.parseDouble(txtlat.getText().toString());
-
-                    double longorigen = Double.parseDouble(txtlong.getText().toString());
-
-                    if (latorigne != 0 || longorigen != 0) {
-
-                        Log.d(TAG, "onMapClick: lat orgien" + latorigne + " long " + longorigen);
-                    }
-
-                    LatLng inicio = new LatLng(latorigne, longorigen);
-
-                    if(inicio!=null){
-
-                        Log.d(TAG, "onMapClick: inicio existe "+inicio.latitude+" -long "+inicio.longitude);
-                    }
-
-                    //Enrutamiento y pintada de primera linea
-                    if(lineaLanzamiento==false) {
-
-
-                        Salon origen = ruteador.masCercano(inicio);
-
-                        Log.d(TAG, "onMapClick: nodo mas cercano" + ruteador.masCercano(inicio).getCodigo());
-
-                        Log.d(TAG, "btnDestino: " + destino);
-
-                        String CodigoDestino = destino;
-
-                        Salon destino = ruteador.buscarSalon(CodigoDestino);
-
-                        ArrayList<Salon> listafinal = ruteador.enrutar(destino, origen);
-
-                        LatLng coord;
-
-                        linea = mMap.addPolyline(new PolylineOptions().color(Color.BLUE));
-
-                        listaPuntos = linea.getPoints();
-
-                        //metodo para separar los pisos
-
-                        setListasPisos(listafinal);
-
-                        //for para llenar los puntos del piso 0
-                    /*
-                    for (int i = 1; i < listaPiso0.size(); i++) {
-
-                        coord = new LatLng(listaPiso0.get(i).getLatitud(), listaPiso0.get(i).getLongitud());
-
-                        listaPuntos.add(coord);
-
-                        coord = null;
-
-                    }
-                    */
-                        setPuntosPiso(linea, 1);
-
-                        linea.setPoints(listaPuntos);
-
-                        pisoActual = 1;
-
-                        lineaLanzamiento=true;
-
-                    }
-                }
-
-                //Log.d(TAG, "onMapClick: lat"+inicio.latitude+"long"+inicio.longitude);
-
-
-                //Cuando hacen tap en el bloque 2 transparentar el plano general y mostrar el plano del bloque
-                //en el piso 0
-
-                /*
-                if (boundsBloque2.contains(mapClick)) {
-
-                   // overlayCapusPampalinda.setTransparency(0.5f);
-                    //overlayBloque2P1.setTransparency(0);
-                    btnUp.setVisibility(View.VISIBLE);
-                    focusBloque = true;
-                    pisoActual = 0;
-                    limiteActual = PISOS_BLOQUE2;
-                    bloqueActual = overlayPisosBloque2;
-
-                } else {
-
-
-                }
-                */
-
-            }
-        });
     }
 
 
