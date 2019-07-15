@@ -14,17 +14,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.GroundOverlay;
-import com.google.android.gms.maps.model.GroundOverlayOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -46,7 +46,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private Polyline ruta;
     private static MapsActivity instance;
 
-    private FusedLocationProviderClient nFusedLocationProviderClient;
+    private FusedLocationProviderClient fusedLocationProviderClient;
+    private LocationCallback locationCallback;
+    private LocationRequest locationRequest;
 
     private GroundOverlay[] bloqueActual;
     private GroundOverlay[] overlayPisosBloque2;
@@ -75,7 +77,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private static final String TAG = "MapsActivity";
     private boolean rutaexiste;
     private boolean lineaLanzamiento;
-
+    private boolean requestingLocationUpdates;
 
 
     private boolean focusBloque;
@@ -94,11 +96,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         Log.d(TAG, "onCreate: se creo");
 
-        
-        nFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
 
         btnUp = (Button) findViewById(R.id.buttonSubir);
-        btnUp.setVisibility(View.INVISIBLE );
+        btnUp.setVisibility(View.INVISIBLE);
         btnDown = (Button) findViewById(R.id.buttonBajar);
         btnDown.setVisibility(View.INVISIBLE);
         btnDestino = (Button) findViewById(R.id.buttonDestino);
@@ -134,7 +136,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 //bloqueActual[pisoActual].setTransparency(1);
                 pisoActual++;
 
-                Log.d(TAG, "Piso up: "+pisoActual);
+                Log.d(TAG, "Piso up: " + pisoActual);
                 //bloqueActual[pisoActual].setTransparency(0);
                 setPuntosPiso(linea, pisoActual);
                 buttonVisible();
@@ -148,7 +150,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 //bloqueActual[pisoActual].setTransparency(1);
                 pisoActual--;
 
-                Log.d(TAG, "Piso down: "+pisoActual);
+                Log.d(TAG, "Piso down: " + pisoActual);
                 //bloqueActual[pisoActual].setTransparency(0);
                 setPuntosPiso(linea, pisoActual);
                 buttonVisible();
@@ -164,9 +166,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 getUltimaPosicion();
 
 
-                if (txtlat.getText().equals("0")&&txtlong.getText().equals("0")&&rutaexiste==false){
+                if (txtlat.getText().equals("0") && txtlong.getText().equals("0") && rutaexiste == false) {
 
-                }else {
+                } else {
                     double latorigne = Double.parseDouble(txtlat.getText().toString());
 
                     double longorigen = Double.parseDouble(txtlong.getText().toString());
@@ -178,13 +180,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                     LatLng inicio = new LatLng(latorigne, longorigen);
 
-                    if(inicio!=null){
+                    if (inicio != null) {
 
-                        Log.d(TAG, "onMapClick: inicio existe "+inicio.latitude+" -long "+inicio.longitude);
+                        Log.d(TAG, "onMapClick: inicio existe " + inicio.latitude + " -long " + inicio.longitude);
                     }
 
                     //Enrutamiento y pintada de primera linea
-                    if(lineaLanzamiento==false) {
+                    if (lineaLanzamiento == false) {
 
 
                         Salon origen = ruteador.masCercano(inicio);
@@ -227,7 +229,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                         pisoActual = 1;
 
-                        lineaLanzamiento=true;
+                        lineaLanzamiento = true;
 
                     }
                 }
@@ -260,6 +262,38 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         });
 
 
+        locationCallback = new LocationCallback(){
+
+            @Override
+            public void onLocationResult(LocationResult locationResult) {
+                if (locationResult == null) {
+                    return;
+                }
+                for (Location location : locationResult.getLocations()) {
+                    // Update UI with location data
+                    // ... TODO
+
+                }
+            };
+
+
+        };
+
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (requestingLocationUpdates) {
+            startLocationUpdates();
+        }
+    }
+
+    @Override
+    protected void onPause(){
+        super.onPause();
+        stopLocationUpdates();
     }
 
 
@@ -274,8 +308,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
      */
     @Override
     public void onMapReady(GoogleMap googleMap) {
-
-
 
 
         ruteador = new Ruteador();
@@ -320,7 +352,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         //Se agrega el GroundOverlay al mapa
         /*final GroundOverlay overlayCapusPampalinda = mMap.addGroundOverlay(USCMapa);
-        */
+         */
 
         //Crea el nuevo GroundOverlay con las coordenadas del bloque 2 y agrega la imagen
         //del plano del piso 1 desde la carpeta res/drawable
@@ -359,28 +391,28 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         for (int i = 0; i < listafinal.size(); i++) {
 
-            Log.d(TAG, "setListasPisoslistaenrutada: "+listafinal.get(i).getCodigo());
+            Log.d(TAG, "setListasPisoslistaenrutada: " + listafinal.get(i).getCodigo());
 
-            if(listafinal.get(i).getPiso()==0){
+            if (listafinal.get(i).getPiso() == 0) {
 
 
                 listaPiso0.add(listafinal.get(i));
-                Log.d(TAG, "setListasPisos0: objeto"+i);
+                Log.d(TAG, "setListasPisos0: objeto" + i);
 
-            }else if(listafinal.get(i).getPiso()==1){
+            } else if (listafinal.get(i).getPiso() == 1) {
 
                 listaPiso1.add(listafinal.get(i));
-                Log.d(TAG, "setListasPisos1: objeto"+i);
+                Log.d(TAG, "setListasPisos1: objeto" + i);
 
-            }else if(listafinal.get(i).getPiso()==2){
+            } else if (listafinal.get(i).getPiso() == 2) {
 
                 listaPiso2.add(listafinal.get(i));
-                Log.d(TAG, "setListasPisos2: objeto"+i);
+                Log.d(TAG, "setListasPisos2: objeto" + i);
 
-            }else if(listafinal.get(i).getPiso()==3){
+            } else if (listafinal.get(i).getPiso() == 3) {
 
                 listaPiso3.add(listafinal.get(i));
-                Log.d(TAG, "setListasPisos3: objeto"+i);
+                Log.d(TAG, "setListasPisos3: objeto" + i);
 
             }
 
@@ -395,7 +427,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         listaPuntos.clear();
 
-        if(pisoActual==0){
+        if (pisoActual == 0) {
 
             for (int i = 0; i < listaPiso0.size(); i++) {
 
@@ -411,7 +443,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
             linea.setPoints(listaPuntos);
 
-        }else if(pisoActual==1){
+        } else if (pisoActual == 1) {
 
             for (int i = 0; i < listaPiso1.size(); i++) {
 
@@ -419,7 +451,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                 listaPuntos.add(coord);
 
-                Log.d(TAG, "setPuntosPiso1: objeto:"+i);
+                Log.d(TAG, "setPuntosPiso1: objeto:" + i);
 
                 coord = null;
 
@@ -427,7 +459,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
             linea.setPoints(listaPuntos);
 
-        }else if (pisoActual==2){
+        } else if (pisoActual == 2) {
 
             for (int i = 0; i < listaPiso2.size(); i++) {
 
@@ -435,7 +467,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                 listaPuntos.add(coord);
 
-                Log.d(TAG, "setPuntosPiso2: objeto:"+i+"Salon"+listaPiso2.get(i).getCodigo());
+                Log.d(TAG, "setPuntosPiso2: objeto:" + i + "Salon" + listaPiso2.get(i).getCodigo());
 
                 coord = null;
 
@@ -443,7 +475,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
             linea.setPoints(listaPuntos);
 
-        }else if(pisoActual==3){
+        } else if (pisoActual == 3) {
 
             for (int i = 0; i < listaPiso3.size(); i++) {
 
@@ -482,7 +514,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 
         /*
-        nFusedLocationProviderClient.getLastLocation().addOnCompleteListener(new OnCompleteListener<Location>() {
+        fusedLocationProviderClient.getLastLocation().addOnCompleteListener(new OnCompleteListener<Location>() {
             @Override
             public void onComplete(@NonNull Task<Location> task) {
                 if(task.isSuccessful()){
@@ -511,23 +543,44 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             // for ActivityCompat#requestPermissions for more details.
             return;
         }
-        nFusedLocationProviderClient.getLastLocation().addOnSuccessListener(this, new OnSuccessListener<Location>() {
+        fusedLocationProviderClient.getLastLocation().addOnSuccessListener(this, new OnSuccessListener<Location>() {
             @Override
             public void onSuccess(Location location) {
                 if (location != null) {
 
-                    txtlat.setText(location.getLatitude()+"");
+                    txtlat.setText(location.getLatitude() + "");
 
-                    txtlong.setText(location.getLongitude()+"");
+                    txtlong.setText(location.getLongitude() + "");
 
-
-                    Log.d(TAG, "onSuccess: entro"+location.getLatitude()+" "+location.getLongitude());
-                    Toast.makeText(MapsActivity.this, "lat" + location.getLatitude() + " long" + location.getLongitude(), Toast.LENGTH_SHORT).show();
                 }
             }
-        });{
+        });
+        {
 
         }
 
     }
+
+
+    private void startLocationUpdates() {
+
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        fusedLocationProviderClient.requestLocationUpdates(locationRequest,
+                locationCallback,
+                null /* Looper */);
+    }
+
+    private void stopLocationUpdates() {
+        fusedLocationProviderClient.removeLocationUpdates(locationCallback);
+    }
+
 }
