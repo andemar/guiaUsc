@@ -391,18 +391,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         //Crea el nuevo GroundOverlay con las coordenadas del bloque 2 y agrega la imagen
         //del plano del piso 1 desde la carpeta res/drawable
 
-        /*GroundOverlayOptions bloque2P1Mapa = new GroundOverlayOptions()
+        GroundOverlayOptions bloque2P1Mapa = new GroundOverlayOptions()
                 .image(BitmapDescriptorFactory.fromResource(R.drawable.bloque2piso1))
                 .positionFromBounds(boundsBloque2);
 
 
         final GroundOverlay overlayBloque2P1 = mMap.addGroundOverlay(bloque2P1Mapa);
         overlayBloque2P1.setTransparency(1);
-        */
+
 
         //Crea el nuevo GroundOverlay con las coordenadas del bloque 2 y agrega la imagen
         //del plano del piso 2 desde la carpeta res/drawable
-        /*
+
         GroundOverlayOptions bloque2P2Mapa = new GroundOverlayOptions()
                 .image(BitmapDescriptorFactory.fromResource(R.drawable.bloque2piso2))
                 .positionFromBounds(boundsBloque2);
@@ -411,7 +411,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         overlayBloque2P2.setTransparency(1);
 
         overlayPisosBloque2 = new GroundOverlay[]{overlayBloque2P1, overlayBloque2P2};
-        */
+
 
         // Add a marker in Sydney and move the camera
         //LatLng USC = new LatLng(3.4034734809095464, -76.54695657064843);
