@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
@@ -27,10 +28,13 @@ import com.google.android.gms.maps.model.GroundOverlay;
 import com.google.android.gms.maps.model.GroundOverlayOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,6 +50,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private LatLngBounds boundsBloque2;
 
     private Polyline ruta;
+    private Marker marcador;
     private static MapsActivity instance;
 
     private FusedLocationProviderClient fusedLocationProviderClient;
@@ -80,6 +85,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private boolean rutaexiste;
     private boolean lineaLanzamiento;
     private boolean requestingLocationUpdates;
+    private static final String REQUESTING_LOCATION_UPDATES_KEY = "0";
 
 
     private boolean focusBloque;
@@ -279,11 +285,31 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     // Update UI with location data
                     // ... TODO
 
+                    Toast.makeText(MapsActivity.this, "acutaliza", Toast.LENGTH_SHORT).show();
+
+                    if(marcador != null){
+                        marcador.remove();
+                    }
+
+                    LatLng coordenadasUsuario = new LatLng(location.getLatitude(), location.getLongitude());
+                    MarkerOptions markerOptions = new MarkerOptions();
+                    markerOptions.position(coordenadasUsuario);
+                    markerOptions.title("Usuario");
+                    markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA));
+                    marcador = mMap.addMarker(markerOptions);
+
+                    Toast.makeText(MapsActivity.this, "Deberia crear marcador", Toast.LENGTH_SHORT).show();
+
+
+
                 }
             };
 
 
         };
+
+
+        updateValuesFromBundle(savedInstanceState);
 
     }
 
@@ -392,6 +418,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         LatLng USC = new LatLng(3.4034453993340605, -76.54781796958935);
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(USC, 20.0f));
 
+        createLocationRequest();
+
+        startLocationUpdates();
 
     }
 
@@ -429,7 +458,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     }
 
-    //TODO
+
     private void setPuntosPiso(Polyline linea, int pisoActual) {
 
         LatLng coord;
@@ -591,5 +620,49 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private void stopLocationUpdates() {
         fusedLocationProviderClient.removeLocationUpdates(locationCallback);
     }
+
+    protected void createLocationRequest() {
+        locationRequest = LocationRequest.create();
+        locationRequest.setInterval(10000);
+        locationRequest.setFastestInterval(5000);
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putBoolean(REQUESTING_LOCATION_UPDATES_KEY,
+                requestingLocationUpdates);
+        // ...
+        super.onSaveInstanceState(outState);
+    }
+
+    private void updateValuesFromBundle(Bundle savedInstanceState) {
+        if (savedInstanceState == null) {
+            return;
+        }
+
+        // Update the value of requestingLocationUpdates from the Bundle.
+        if (savedInstanceState.keySet().contains(REQUESTING_LOCATION_UPDATES_KEY)) {
+            requestingLocationUpdates = savedInstanceState.getBoolean(
+                    REQUESTING_LOCATION_UPDATES_KEY);
+        }
+
+        // ...
+
+        // Update UI to match restored state
+
+    }
+
+
+    LocationListener locationListener = new LocationListener() {
+        @Override
+        public void onLocationChanged(Location location) {
+        if(location!=null){
+
+            Log.d(TAG, "onLocationChanged: cambio a "+location.getLatitude()+" - "+location.getLongitude());
+
+        }
+        }
+    };
 
 }
