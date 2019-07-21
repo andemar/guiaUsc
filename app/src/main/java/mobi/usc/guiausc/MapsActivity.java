@@ -22,7 +22,9 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.GroundOverlay;
+import com.google.android.gms.maps.model.GroundOverlayOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Polyline;
@@ -89,7 +91,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
+
+        if(savedInstanceState == null){
+            mapFragment.getMapAsync(this);
+        }
+
 
         lineaLanzamiento = false;
         rutaexiste = false;
@@ -323,7 +329,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         // que se muestran en la aplicacion.
         // coordenadas originales  new LatLng(3.401541193971563, -76.5496220406365)
         boundsCampusUSCPampalinda = new LatLngBounds(
-                new LatLng(3.4013, -76.54978), new LatLng(3.4044, -76.5467)
+                 //new LatLng(3.4013, -76.54978), new LatLng(3.4044, -76.5467) //Coordenadas del plano general de la universidad
+                //new LatLng(3.403801921103504, -76.54802872296392), new LatLng(3.403036777475968, -76.54698391208632)
+                new LatLng(3.4030856467031017, -76.54809219727076), new LatLng(3.4038092580688097, -76.54673464999632)
         );
 
         //Coordenadas originales
@@ -337,22 +345,22 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.setLatLngBoundsForCameraTarget(boundsCampusUSCPampalinda);
 
         //Se establecen los limites minimos y maximos del zoom al mapa
-        mMap.setMinZoomPreference(20.0f);
-        mMap.setMaxZoomPreference(20.0f);
+        mMap.setMinZoomPreference(21.0f);
+        mMap.setMaxZoomPreference(21.0f);
 
 
         //Crea el nuevo GroundOverlay con las coordenadas de la universidad y agrega la imagen
         //del plano desde la carpeta res/drawable
-        /*GroundOverlayOptions USCMapa = new GroundOverlayOptions()
+        GroundOverlayOptions USCMapa = new GroundOverlayOptions()
                 .image(BitmapDescriptorFactory.fromResource(R.drawable.planocampus))
                 .positionFromBounds(boundsCampusUSCPampalinda);
-                */
+
 
         //.position(USC, 8600f, 6500f);
 
         //Se agrega el GroundOverlay al mapa
-        /*final GroundOverlay overlayCapusPampalinda = mMap.addGroundOverlay(USCMapa);
-         */
+        final GroundOverlay overlayCapusPampalinda = mMap.addGroundOverlay(USCMapa);
+
 
         //Crea el nuevo GroundOverlay con las coordenadas del bloque 2 y agrega la imagen
         //del plano del piso 1 desde la carpeta res/drawable
@@ -380,7 +388,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         */
 
         // Add a marker in Sydney and move the camera
-        LatLng USC = new LatLng(3.4034734809095464, -76.54695657064843);
+        //LatLng USC = new LatLng(3.4034734809095464, -76.54695657064843);
+        LatLng USC = new LatLng(3.4034453993340605, -76.54781796958935);
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(USC, 20.0f));
 
 
