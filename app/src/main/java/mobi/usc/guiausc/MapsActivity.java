@@ -361,10 +361,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 
         //
-        mMap.setLatLngBoundsForCameraTarget(boundsCampusUSCPampalinda);
+        //mMap.setLatLngBoundsForCameraTarget(boundsCampusUSCPampalinda);
 
         //Se establecen los limites minimos y maximos del zoom al mapa
-        mMap.setMinZoomPreference(20.0f);
+        //mMap.setMinZoomPreference(20.0f);
         mMap.setMaxZoomPreference(20.0f);
 
 
