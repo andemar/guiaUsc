@@ -298,14 +298,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 
                 }
-            };
-
-
+            }
         };
-
-
         updateValuesFromBundle(savedInstanceState);
-
     }
 
 
@@ -335,7 +330,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
      */
     @Override
     public void onMapReady(GoogleMap googleMap) {
-
 
         ruteador = new Ruteador();
 
