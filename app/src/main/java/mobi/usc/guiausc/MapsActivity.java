@@ -57,6 +57,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private LocationCallback locationCallback;
     private LocationRequest locationRequest;
 
+    private GroundOverlay overlayCapusPampalinda;
     private GroundOverlay[] bloqueActual;
     private GroundOverlay[] overlayPisosBloque2;
 
@@ -126,9 +127,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         txtlong.setText("0");
         txtlong.setVisibility(View.INVISIBLE);
 
-        btnUp.setVisibility(View.VISIBLE);
-        btnDown.setVisibility(View.VISIBLE);
-
         instance = this;
 
         focusBloque = false;
@@ -139,19 +137,32 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         listaPiso3 = new ArrayList<Salon>();
 
         //TODO
-        limiteActual = 3;
+        limiteActual = 2;
 
         btnUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                //bloqueActual[pisoActual].setTransparency(1);
+                if(bloqueActual[pisoActual]!=null){
+                    bloqueActual[pisoActual].setTransparency(1);
+                }
+
                 pisoActual++;
 
-                Log.d(TAG, "Piso up: " + pisoActual);
-                //bloqueActual[pisoActual].setTransparency(0);
-                setPuntosPiso(linea, pisoActual);
-                buttonVisible();
+                if(pisoActual > 1 &&   bloqueActual[pisoActual]!=null){
+                    overlayCapusPampalinda.setTransparency(0.5f);
+                    Log.d(TAG, "Piso up: " + pisoActual);
+                    bloqueActual[pisoActual].setTransparency(0);
+                    setPuntosPiso(linea, pisoActual);
+                    buttonVisible();
+
+                }else if(pisoActual==1){
+
+                    overlayCapusPampalinda.setTransparency(0);
+                    buttonVisible();
+                }else{
+                    //TODO Cuando manejemos sotanos
+                }
             }
         });
 
@@ -159,13 +170,26 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onClick(View view) {
 
-                //bloqueActual[pisoActual].setTransparency(1);
+                if(bloqueActual[pisoActual]!=null){
+                    bloqueActual[pisoActual].setTransparency(1);
+                }
                 pisoActual--;
 
-                Log.d(TAG, "Piso down: " + pisoActual);
-                //bloqueActual[pisoActual].setTransparency(0);
-                setPuntosPiso(linea, pisoActual);
-                buttonVisible();
+                if(pisoActual > 1 &&   bloqueActual[pisoActual]!=null){
+                    overlayCapusPampalinda.setTransparency(0.5f);
+                    Log.d(TAG, "Piso down: " + pisoActual);
+                    bloqueActual[pisoActual].setTransparency(0);
+                    setPuntosPiso(linea, pisoActual);
+                    buttonVisible();
+                }else if(pisoActual==1){
+
+                    overlayCapusPampalinda.setTransparency(0);
+                    buttonVisible();
+                }else{
+                    //TODO Cuando manejemos sotanos
+                }
+
+
             }
         });
 
@@ -239,7 +263,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                         linea.setPoints(listaPuntos);
 
-                        pisoActual = 1;
+
 
                         lineaLanzamiento = true;
 
@@ -379,7 +403,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         //.position(USC, 8600f, 6500f);
 
         //Se agrega el GroundOverlay al mapa
-        final GroundOverlay overlayCapusPampalinda = mMap.addGroundOverlay(USCMapa);
+        final GroundOverlay overlayCapus = mMap.addGroundOverlay(USCMapa);
+
+        overlayCapusPampalinda = overlayCapus;
 
 
         //Crea el nuevo GroundOverlay con las coordenadas del bloque 2 y agrega la imagen
@@ -404,13 +430,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         final GroundOverlay overlayBloque2P2 = mMap.addGroundOverlay(bloque2P2Mapa);
         overlayBloque2P2.setTransparency(1);
 
-        overlayPisosBloque2 = new GroundOverlay[]{overlayBloque2P1, overlayBloque2P2};
-
+        //overlayPisosBloque2 = new GroundOverlay[]{overlayBloque2P1, overlayBloque2P2}; // TODO Cuando se vuelva a diferenciar cuando entre a los bloques
+        overlayPisosBloque2 = new GroundOverlay[]{null, null, overlayBloque2P2};
+        bloqueActual = overlayPisosBloque2;
 
         // Add a marker in Sydney and move the camera
         //LatLng USC = new LatLng(3.4034734809095464, -76.54695657064843);
         LatLng USC = new LatLng(3.4034453993340605, -76.54781796958935);
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(USC, 20.0f));
+
+        pisoActual = 1;
 
         createLocationRequest();
 
