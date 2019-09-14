@@ -4,12 +4,14 @@ import android.Manifest;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
+import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,16 +27,20 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.GroundOverlay;
-import com.google.android.gms.maps.model.GroundOverlayOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.android.gms.maps.model.TileOverlay;
+import com.google.android.gms.maps.model.TileOverlayOptions;
+import com.google.android.gms.maps.model.TileProvider;
+import com.google.android.gms.maps.model.UrlTileProvider;
 import com.google.android.gms.tasks.OnSuccessListener;
 
-import java.text.DateFormat;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,9 +51,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private Ruteador ruteador;
 
     private static final LatLng USC = new LatLng(3.403026785954639, -76.54848105758441);
+    private static final int TRANSPARENCY_MAX = 100;
+
+    /** Formato para las URL de las imagenes en servidor */
+    private static final String MOON_MAP_URL_FORMAT =
+            "https://mw1.google.com/mw-planetary/lunar/lunarmaps_v1/clem_bw/%d/%d/%d.jpg";
 
     private LatLngBounds boundsCampusUSCPampalinda;
     private LatLngBounds boundsBloque2;
+
+    private TileOverlay mMoonTiles;
+    private SeekBar mTransparencyBar;
 
     private Polyline ruta;
     private Marker marcador;
@@ -95,6 +109,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+
+
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -393,8 +409,31 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.setMaxZoomPreference(21.0f);
 
 
+        TileProvider tileProvider = new UrlTileProvider(256, 256) {
+            @Override
+            public synchronized URL getTileUrl(int x, int y, int zoom) {
+                // The moon tile coordinate system is reversed.  This is not normal.
+                //String s = String.format(Locale.US, MOON_MAP_URL_FORMAT, zoom, x, y);
+                String s = "http://guiausc.000webhostapp.com/images/test/planocampusbloque2.jpg";
+                URL url = null;
+                try {
+                    url = new URL(s);
+                } catch (MalformedURLException e) {
+                    throw new AssertionError(e);
+                }
+
+                Log.d("a", "getTileUrl: "+url);
+                return url;
+            }
+        };
+
+        mMoonTiles = mMap.addTileOverlay(new TileOverlayOptions().tileProvider(tileProvider));
+
+
+
         //Crea el nuevo GroundOverlay con las coordenadas de la universidad y agrega la imagen
         //del plano desde la carpeta res/drawable
+        /*
         GroundOverlayOptions USCMapa = new GroundOverlayOptions()
                 .image(BitmapDescriptorFactory.fromResource(R.drawable.planocampus))
                 .positionFromBounds(boundsCampusUSCPampalinda);
@@ -406,11 +445,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         final GroundOverlay overlayCapus = mMap.addGroundOverlay(USCMapa);
 
         overlayCapusPampalinda = overlayCapus;
-
+        */
 
         //Crea el nuevo GroundOverlay con las coordenadas del bloque 2 y agrega la imagen
         //del plano del piso 1 desde la carpeta res/drawable
 
+        /*
         GroundOverlayOptions bloque2P1Mapa = new GroundOverlayOptions()
                 .image(BitmapDescriptorFactory.fromResource(R.drawable.bloque2piso1))
                 .positionFromBounds(boundsBloque2);
@@ -418,11 +458,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         final GroundOverlay overlayBloque2P1 = mMap.addGroundOverlay(bloque2P1Mapa);
         overlayBloque2P1.setTransparency(1);
+        */
 
 
         //Crea el nuevo GroundOverlay con las coordenadas del bloque 2 y agrega la imagen
         //del plano del piso 2 desde la carpeta res/drawable
 
+        /*
         GroundOverlayOptions bloque2P2Mapa = new GroundOverlayOptions()
                 .image(BitmapDescriptorFactory.fromResource(R.drawable.bloque2piso2))
                 .positionFromBounds(boundsBloque2);
@@ -433,6 +475,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         //overlayPisosBloque2 = new GroundOverlay[]{overlayBloque2P1, overlayBloque2P2}; // TODO Cuando se vuelva a diferenciar cuando entre a los bloques
         overlayPisosBloque2 = new GroundOverlay[]{null, null, overlayBloque2P2};
         bloqueActual = overlayPisosBloque2;
+        */
 
         // Add a marker in Sydney and move the camera
         //LatLng USC = new LatLng(3.4034734809095464, -76.54695657064843);
@@ -687,5 +730,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
         }
     };
+
+    public void setFadeIn(View v) {
+        if (mMoonTiles == null) {
+            return;
+        }
+        mMoonTiles.setFadeIn(((CheckBox) v).isChecked());
+    }
 
 }
